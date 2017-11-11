@@ -1,0 +1,20 @@
+login
+
+location data (geo-info)
+	maybe a location graph eventually too
+
+social graph
+
+calendar
+
+weather
+
+Experience
+	associated text (aka note)
+	geo info
+	date
+	weather info
+	associated image(s)
+		how??
+
+we can make prototypes for each of these ...

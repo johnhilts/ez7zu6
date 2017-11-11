@@ -1,0 +1,41 @@
+UI
+
+** Nav Bar **
+Add * Search * Calendar * Settings
+
+*** Add ***
+Global Icon to add location
+Thumbs Up Icon to add likability - 1 to 10
+Want to visit again - yes, no, maybe
+Date Visited - today... (can change)
+Weather - (get current)
+Notes (optional) textbox entry
+
+*** Search ***
+search text
+near (location, including "here")
+date range
+likability
+Want to visit again
+
+*** Calendar ***
+basically, something that looks like ez2ki6
+
+
+VERY Possible re-name:
+easychizuroku
+ez7zu6
+ez2ki6
+
+integration
+ez2ki6 - for this, we'll need to pass in something for notes
+can we just have ez2ki6 as a separate plugin, or ...?
+what's the best way to integrate it?
+	best idea?
+		just re-use the components ... don't actually integrate with the complete app ... this version would just use 1 calendar 
+		possible to use as an npm package??
+concerns:
+	data location
+	users only have access to their own data
+
+

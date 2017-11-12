@@ -12,18 +12,18 @@ namespace ez7zu6.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly string _defaultUrl = @"\profile";
+
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
         {
-            ViewData["ReturnUrl"] = returnUrl;
+            ViewData["ReturnUrl"] = returnUrl ?? _defaultUrl;
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
-            //var loggedIn = base.User.Identity.IsAuthenticated;
-
             ViewData["ReturnUrl"] = returnUrl;
             if (!ModelState.IsValid)
                 return View();
@@ -51,6 +51,13 @@ namespace ez7zu6.Controllers
         {
             var claims = new[] { new Claim(ClaimTypes.Name, model.Username), };
             return claims;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return Redirect("/");
         }
     }
 }

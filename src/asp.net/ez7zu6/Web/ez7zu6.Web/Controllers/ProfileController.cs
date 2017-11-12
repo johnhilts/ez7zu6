@@ -15,5 +15,17 @@ namespace ez7zu6.Web.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Edit()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Review()
+        {
+            return View();
+        }
     }
 }

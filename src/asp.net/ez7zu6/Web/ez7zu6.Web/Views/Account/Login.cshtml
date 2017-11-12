@@ -1,2 +1,12 @@
 ﻿<h2>This is the Login Page</h2>
 
+<form action="/account/login" method="post">
+    <div>
+        <div><label for="txtUserName">User</label></div>
+        <div><input id="txtUserName" name="Username" placeholder="user" type="email" /></div>
+        <div><label for="txtPassword">Password</label></div>
+        <div><input id="txtPassword" name="Password" type="password" /></div>
+        <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+        <div><button type="submit">Login</button></div>
+    </div>
+</form>

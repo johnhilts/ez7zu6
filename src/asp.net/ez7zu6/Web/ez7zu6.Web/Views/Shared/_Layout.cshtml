@@ -8,7 +8,7 @@
 <body>
     <div>
         @{
-            var loggedIn = base.User.Identity.IsAuthenticated;
+            var loggedIn = ViewBag.IsAuthenticated;
             if (loggedIn)
             {
                 <a href="/Account/Logout">Logout</a>;

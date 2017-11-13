@@ -22,5 +22,21 @@ describe('account', () => {
                 expect(actual).to.eq(expected)
             })
         })
+        it('cannot access profile after logout', () => {
+            cy.visit(`${baseUrl}/account/login`);
+            let username = 'john@test.com';
+            let password = 'test123';
+            cy.get('#txtUserName').type(username).should('have.value', username);
+            cy.get('#txtPassword').type(password).should('have.value', password);
+            cy.get('button').click();
+            cy.contains('a', 'Logout').click()
+            let unexpected = `${baseUrl}/profile`;
+            cy.visit(unexpected);
+            cy.location().should((location) => {
+                let expected = '/account/login';
+                let actual = location.pathname.toLowerCase(); 
+                expect(actual).to.eq(expected)
+            })
+        })
     })
 });

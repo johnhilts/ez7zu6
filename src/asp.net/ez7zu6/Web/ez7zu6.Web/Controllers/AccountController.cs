@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using ez7zu6.Web.Models.Account;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Security.Claims;
+using ez7zu6.Web.Models.Account;
+using Member;
 
 namespace ez7zu6.Web.Controllers
 {
@@ -25,7 +26,7 @@ namespace ez7zu6.Web.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            var canAuthenticate = await CanAuthenticateUser(model.Username, model.Password);
+            var canAuthenticate = await (new MemberService()).CanAuthenticateUser(model.Username, model.Password);
             if (!canAuthenticate)
             {
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
@@ -36,12 +37,6 @@ namespace ez7zu6.Web.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
 
             return Redirect(returnUrl);
-        }
-
-        private async Task<bool> CanAuthenticateUser(string username, string password)
-        {
-            // todo: link to database
-            return (username == "john@test.com");
         }
 
         private Claim[] LoadClaims(LoginViewModel model)

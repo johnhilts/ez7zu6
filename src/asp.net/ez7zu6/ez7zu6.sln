@@ -5,6 +5,19 @@ VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ez7zu6.Web", "Web\ez7zu6.Web\ez7zu6.Web.csproj", "{462E1D99-998A-474F-BB49-CA35A42256F2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{3F781FCB-0118-48AD-A1E2-3B67EF2E6CF9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AddAuthentication", "AddAuthentication", "{12918996-20F3-41EE-ADFD-79EC6B992CAB}"
+	ProjectSection(SolutionItems) = preProject
+		Accounts.sql = Accounts.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{E44F72FA-87EF-46ED-A690-4E74E3CBB60F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Member", "Modules\Member\Member.csproj", "{4232541E-8B16-43EE-87C8-6D4AD55F042C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Modules\Infrastructure\Infrastructure.csproj", "{CCC368D8-14CD-4D45-9A92-9126F48028A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +28,22 @@ Global
 		{462E1D99-998A-474F-BB49-CA35A42256F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{462E1D99-998A-474F-BB49-CA35A42256F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{462E1D99-998A-474F-BB49-CA35A42256F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4232541E-8B16-43EE-87C8-6D4AD55F042C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4232541E-8B16-43EE-87C8-6D4AD55F042C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4232541E-8B16-43EE-87C8-6D4AD55F042C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4232541E-8B16-43EE-87C8-6D4AD55F042C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCC368D8-14CD-4D45-9A92-9126F48028A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCC368D8-14CD-4D45-9A92-9126F48028A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCC368D8-14CD-4D45-9A92-9126F48028A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCC368D8-14CD-4D45-9A92-9126F48028A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{12918996-20F3-41EE-ADFD-79EC6B992CAB} = {3F781FCB-0118-48AD-A1E2-3B67EF2E6CF9}
+		{4232541E-8B16-43EE-87C8-6D4AD55F042C} = {E44F72FA-87EF-46ED-A690-4E74E3CBB60F}
+		{CCC368D8-14CD-4D45-9A92-9126F48028A1} = {E44F72FA-87EF-46ED-A690-4E74E3CBB60F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {63A9E1FA-100E-4FB0-8581-FDC9CE66A9E1}

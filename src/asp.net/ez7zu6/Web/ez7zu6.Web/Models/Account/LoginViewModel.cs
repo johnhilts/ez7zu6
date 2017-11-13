@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ez7zu6.Models.Account
+namespace ez7zu6.Web.Models.Account
 {
     public class LoginViewModel
     {

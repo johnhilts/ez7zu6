@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.IO;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.FileProviders;
 
 namespace ez7zu6.Web
 {
@@ -32,6 +34,16 @@ namespace ez7zu6.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            void MapVirtualPath(string path) // NOTE: only works 1 level deep
+            {
+                app.UseFileServer(new FileServerOptions
+                {
+                    FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, path)),
+                    RequestPath = new PathString("/${path}"),
+                    EnableDirectoryBrowsing = false
+                });
+            }
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -39,6 +51,8 @@ namespace ez7zu6.Web
 
             // for cookie-based auth
             app.UseAuthentication();
+
+            MapVirtualPath("env");
 
             app.UseStaticFiles();
 
@@ -49,5 +63,6 @@ namespace ez7zu6.Web
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
     }
 }

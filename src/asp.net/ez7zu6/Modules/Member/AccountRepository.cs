@@ -8,11 +8,11 @@ namespace Member
 {
     public class AccountRepository
     {
-        protected Settings _settings{ get; private set; }
+        private readonly Settings _settings;
 
-        public AccountRepository()
+        public AccountRepository(Settings settings)
         {
-            _settings = new Settings();
+            _settings = settings;
         }
 
         private SqlConnection GetConnection()

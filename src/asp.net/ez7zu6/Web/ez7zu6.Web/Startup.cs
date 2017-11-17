@@ -35,10 +35,10 @@ namespace ez7zu6.Web
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            //if (env.IsDevelopment())
+            //{
+            app.UseDeveloperExceptionPage();
+            //}
 
             // for cookie-based auth
             app.UseAuthentication();

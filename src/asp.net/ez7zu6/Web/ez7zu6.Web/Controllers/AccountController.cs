@@ -20,7 +20,7 @@ namespace ez7zu6.Web.Controllers
 
         public AccountController(IHostingEnvironment hostingEnvironment)
         {
-            var configurationPath = Path.Combine(hostingEnvironment.WebRootPath, EnvironmentPath, "ConnectionString.txt"); 
+            var configurationPath = Path.Combine(hostingEnvironment.WebRootPath ?? string.Empty, EnvironmentPath, "ConnectionString.txt");
             _settings = new Settings(null, configurationPath);
         }
 

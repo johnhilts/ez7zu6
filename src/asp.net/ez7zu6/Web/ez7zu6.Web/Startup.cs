@@ -36,9 +36,13 @@ namespace ez7zu6.Web
         {
             void MapVirtualPath(string path) // NOTE: only works 1 level deep
             {
+                var fullPath = Path.Combine(env.WebRootPath, path);
+
+                if (!Directory.Exists(fullPath)) return;
+
                 app.UseFileServer(new FileServerOptions
                 {
-                    FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, path)),
+                    FileProvider = new PhysicalFileProvider(fullPath),
                     RequestPath = new PathString("/${path}"),
                     EnableDirectoryBrowsing = false
                 });

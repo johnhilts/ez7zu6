@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "cypress"
+		},
+		{
+			"path": "reactjs"
+		}
+	],
+	"settings": {}
+}

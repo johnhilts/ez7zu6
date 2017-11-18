@@ -1,15 +1,28 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using ez7zu6.Web.Models.Account;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Security.Claims;
+using Microsoft.AspNetCore.Hosting;
+using ez7zu6.Web.Models.Account;
+using Infrastructure;
+using Member;
 
 namespace ez7zu6.Web.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly Settings _settings;
+        private readonly string EnvironmentPath = "env";
+
         private readonly string _defaultUrl = @"\profile";
+
+        public AccountController(IHostingEnvironment hostingEnvironment)
+        {
+            var configurationPath = Path.Combine(hostingEnvironment.WebRootPath ?? string.Empty, EnvironmentPath, "ConnectionString.txt");
+            _settings = new Settings(null, configurationPath);
+        }
 
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
@@ -25,7 +38,7 @@ namespace ez7zu6.Web.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            var canAuthenticate = await CanAuthenticateUser(model.Username, model.Password);
+            var canAuthenticate = await (new MemberService(_settings)).CanAuthenticateUser(model.Username, model.Password);
             if (!canAuthenticate)
             {
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
@@ -36,12 +49,6 @@ namespace ez7zu6.Web.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
 
             return Redirect(returnUrl);
-        }
-
-        private async Task<bool> CanAuthenticateUser(string username, string password)
-        {
-            // todo: link to database
-            return (username == "john@test.com");
         }
 
         private Claim[] LoadClaims(LoginViewModel model)

@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.IO;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
-using ez7zu6.Web.Application;
+using Microsoft.Extensions.FileProviders;
 
 namespace ez7zu6.Web
 {
@@ -33,10 +34,11 @@ namespace ez7zu6.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+
+            //if (env.IsDevelopment())
+            //{
+            app.UseDeveloperExceptionPage();
+            //}
 
             // for cookie-based auth
             app.UseAuthentication();
@@ -50,5 +52,6 @@ namespace ez7zu6.Web
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
     }
 }

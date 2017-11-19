@@ -38,12 +38,11 @@ namespace ez7zu6.Web
 
         private IAppEnvironment GetAppEnvironment()
         {
-            var webRootPath = HostingEnvironment.WebRootPath;
-            var isAppHarbor = webRootPath == null;
+            bool.TryParse(System.Environment.GetEnvironmentVariable("IS_APPHARBOR"), out bool isAppHarbor);
             if (isAppHarbor)
                 return new AppHarborAppEnvironment();
             else
-                return new LocalAppEnvironment(webRootPath);
+                return new LocalAppEnvironment(HostingEnvironment.WebRootPath);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

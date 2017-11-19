@@ -26,18 +26,22 @@
     </style>
 </head>
 <body>
-    <div>
-        @{
+    <div class="row">
+        <div class="col-sm-1"><button class="btn btn-success glyphicon glyphicon-plus" style="color: black;" /></div>
+        <div class="col-sm-1"><button class="btn btn-success glyphicon glyphicon-list-alt" style="color: black;" /></div>
+        <div class="col-sm-1">
+            @{
             var loggedIn = ViewBag.IsAuthenticated;
             if (loggedIn)
             {
-                <a href="/Account/Logout">Logout</a>;
+                <a class="btn btn-warning glyphicon glyphicon-log-out" style="color: black;" href="/Account/Logout"></a>;
             }
             else
             {
-                <a href="/Account/Login">Login</a>;
+                <a class="btn btn-success glyphicon glyphicon-log-in" style="color: black;" href="/Account/Login"></a>;
             }
-        }
+            }
+        </div>
     </div>
     <div>
         @RenderBody()

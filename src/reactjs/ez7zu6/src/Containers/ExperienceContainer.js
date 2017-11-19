@@ -5,7 +5,7 @@ class ExperienceContainer extends Component {
         return (
             <div>
                 <div>
-                    <textArea cols='50' rows='5' />
+                    <textArea cols='50' rows='5' placeholder='record an experience' />
                 </div>
                 <div className='autoInfoContainer'>
                     <span className='autoInfo'>Thumbsup</span>

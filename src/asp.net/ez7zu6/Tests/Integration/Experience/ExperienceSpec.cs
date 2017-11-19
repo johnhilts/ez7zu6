@@ -18,7 +18,7 @@ namespace Integration.Experience
                       var experience = new TestExperience { Notes = "test 123", };
                       var json = JsonConvert.SerializeObject(experience);
                       var client = new HttpClient();
-                      var url = new Uri("http://localhost:17726/api/experienceapi");
+                      var url = new Uri("http://localhost:17726/api/experience");
                       var response = await client.PostAsync(url, new StringContent(json, Encoding.UTF8, "application/json"));
                       response.IsSuccessStatusCode.Should().Be(true);
                       var expected = "OK";

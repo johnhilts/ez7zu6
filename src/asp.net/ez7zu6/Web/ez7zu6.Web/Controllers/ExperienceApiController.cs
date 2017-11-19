@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ez7zu6.Web.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/experience")]
     public class ExperienceApiController : Controller
     {
         // GET api/values

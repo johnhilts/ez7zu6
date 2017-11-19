@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Core;
+@inject IAppEnvironment AppEnvironment
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -40,7 +42,14 @@
     <div>
         @RenderBody()
     </div>
-    <script type="text/javascript" src="http://localhost:3000/static/js/bundle.js"></script>
+    @if (AppEnvironment.Location == EnvironmentLocation.Local)
+    {
+        <script type="text/javascript" src="http://localhost:3000/static/js/bundle.js"></script>
+    }
+    else
+    {
+        <script type="text/javascript" src="/js/bundle.js"></script>
+    }
     @RenderSection("Scripts", required: false)
 </body>
 </html>

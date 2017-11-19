@@ -5,7 +5,10 @@ import ExperienceContainer from './Containers/ExperienceContainer';
 // import App from './App';
 // import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<ExperienceContainer />, document.getElementById('addExperience'));
+let addExperience = document.getElementById('addExperience');
+if (addExperience){
+    ReactDOM.render(<ExperienceContainer />, addExperience);
+}
 // ReactDOM.render(<App />, document.getElementById('root'));
 // registerServiceWorker();
 

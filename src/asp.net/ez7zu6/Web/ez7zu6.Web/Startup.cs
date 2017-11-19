@@ -24,7 +24,7 @@ namespace ez7zu6.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IAppEnvironment>(s => new LocalAppEnvironment(HostingEnvironment.WebRootPath));
+            services.AddSingleton<IAppEnvironment>(s => GetAppEnvironment());
 
             services.AddMvc();
             // enable cookie-based auth - see here: https://docs.microsoft.com/en-us/aspnet/core/security/authentication/cookie?tabs=aspnetcore2x
@@ -36,14 +36,14 @@ namespace ez7zu6.Web
             });
         }
 
-        private IAppEnvironment GetAppEnvironment(IHostingEnvironment env)
+        private IAppEnvironment GetAppEnvironment()
         {
             var webRootPath = HostingEnvironment.WebRootPath;
             var isAppHarbor = webRootPath == null;
             if (isAppHarbor)
                 return new AppHarborAppEnvironment();
             else
-                return new LocalAppEnvironment(HostingEnvironment.WebRootPath);
+                return new LocalAppEnvironment(webRootPath);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

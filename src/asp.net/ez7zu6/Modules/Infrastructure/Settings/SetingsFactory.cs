@@ -11,8 +11,7 @@ namespace Infrastructure.Settings
         public ISettings GetSettings(IAppEnvironment appEnvironment)
         {
             var appRootPath = appEnvironment.AppRootPath ?? string.Empty;
-            var isAppHarbor = string.IsNullOrWhiteSpace(appRootPath);
-            if (isAppHarbor)
+            if (appEnvironment.Location == EnvironmentLocation.AppHarbor)
                 return new AppHarborSettings(WeatherKey, null);
             else
             {

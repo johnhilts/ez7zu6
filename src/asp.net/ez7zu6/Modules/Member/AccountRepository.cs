@@ -2,23 +2,18 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
-using Infrastructure;
+using Core;
+using Infrastructure.Settings;
 
 namespace Member
 {
     public class AccountRepository
     {
-        private readonly Settings _settings;
+        private readonly ISettings _settings;
 
-        public AccountRepository(Settings settings)
-        {
-            _settings = settings;
-        }
+        public AccountRepository(IAppEnvironment appEnvironment) => _settings = new SetingsFactory().GetSettings(appEnvironment);
 
-        private SqlConnection GetConnection()
-        {
-            return new SqlConnection(_settings.ConnectionString());
-        }
+        private SqlConnection GetConnection() => new SqlConnection(_settings.ConnectionString);
 
         public async Task<AccountQueryModel> GetAccountInfoByLoginPasswordAsync(string username, string password)
         {

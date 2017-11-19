@@ -1,19 +1,22 @@
-﻿using System.IO;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.FileProviders;
+using Core;
+using Infrastructure.Environment;
 
 namespace ez7zu6.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private IHostingEnvironment HostingEnvironment { get; }
+
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
+            HostingEnvironment = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -21,6 +24,8 @@ namespace ez7zu6.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IAppEnvironment>(s => new LocalAppEnvironment(HostingEnvironment.WebRootPath));
+
             services.AddMvc();
             // enable cookie-based auth - see here: https://docs.microsoft.com/en-us/aspnet/core/security/authentication/cookie?tabs=aspnetcore2x
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options=>
@@ -29,6 +34,16 @@ namespace ez7zu6.Web
                 options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; // TODO: really want to make this always"
                 //options.Cookie.Domain = "jfh-auth";
             });
+        }
+
+        private IAppEnvironment GetAppEnvironment(IHostingEnvironment env)
+        {
+            var webRootPath = HostingEnvironment.WebRootPath;
+            var isAppHarbor = webRootPath == null;
+            if (isAppHarbor)
+                return new AppHarborAppEnvironment();
+            else
+                return new LocalAppEnvironment(HostingEnvironment.WebRootPath);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

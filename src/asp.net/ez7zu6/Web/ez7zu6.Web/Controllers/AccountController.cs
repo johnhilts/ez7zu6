@@ -1,28 +1,20 @@
-﻿using System.IO;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Hosting;
 using ez7zu6.Web.Models.Account;
-using Infrastructure;
 using Member;
+using Core;
 
 namespace ez7zu6.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly Settings _settings;
-        private readonly string EnvironmentPath = "env";
-
         private readonly string _defaultUrl = @"\profile";
+        private readonly IAppEnvironment _appEnvironment;
 
-        public AccountController(IHostingEnvironment hostingEnvironment)
-        {
-            var configurationPath = Path.Combine(hostingEnvironment.WebRootPath ?? string.Empty, EnvironmentPath, "ConnectionString.txt");
-            _settings = new Settings(null, configurationPath);
-        }
+        public AccountController(IAppEnvironment appEnvironment) => _appEnvironment = appEnvironment;
 
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
@@ -38,7 +30,7 @@ namespace ez7zu6.Web.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            var canAuthenticate = await (new MemberService(_settings)).CanAuthenticateUser(model.Username, model.Password);
+            var canAuthenticate = await (new MemberService(_appEnvironment)).CanAuthenticateUser(model.Username, model.Password);
             if (!canAuthenticate)
             {
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");

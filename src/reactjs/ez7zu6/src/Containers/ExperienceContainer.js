@@ -1,37 +1,32 @@
 import React, { Component } from 'react';
-
-const EzButton = (props) => {
-    const ezButtonClass = `btn btn-success glyphicon glyphicon-${props.iconName}`;
-    return <button className={ezButtonClass} style={{color: 'black'}}></button>
-}
+import ExperienceEntry from '../components/ExperienceEntry';
 
 class ExperienceContainer extends Component {
+  constructor(props) {
+    super(props);
+
+		this.handleSaveInfo = this.handleSaveInfo.bind(this);
+
+		// this.state = { 'users': {}, }
+    }
+
+    handleSaveInfo(event) {
+        event.preventDefault();
+
+        let notes = event.target[0].value
+        let timestamp = (new Date()).getTime();
+
+        alert(`You entered: ${notes} - wow!`)
+
+        // this.state.dates.push(date);
+        // this.setState({ dates: this.state.dates });
+        // this.props.onSaveDateInfo(this.state.dates);
+
+        // event.target.reset();
+    }
+
     render() {
-        return (
-            <div>
-                <div>
-                    <textArea cols='50' rows='3' placeholder='record an experience' />
-                </div>
-                <div className='autoInfoContainer'>
-                    <EzButton iconName='thumbs-up' />
-                </div>
-                <div className='autoInfoContainer'>
-                    <EzButton iconName='camera' />
-                </div>
-                <div className='autoInfoContainer'>
-                    <span className='autoInfo'>Los Angeles, CA US</span>
-                </div>
-                <div className='autoInfoContainer'>
-                    <span className='autoInfo'>Saturday, November 18, 2017 4PM</span>
-                </div>
-                <div className='autoInfoContainer'>
-                    <span className='autoInfo'>65&deg;F - clear</span>
-                </div>
-                <div className='autoInfoContainer'>
-                    <button className='btn btn-danger'>SAVE</button>
-                </div>
-            </div>
-        );
+        return <ExperienceEntry onSubmit={this.handleSaveInfo} />
     }
 }
 

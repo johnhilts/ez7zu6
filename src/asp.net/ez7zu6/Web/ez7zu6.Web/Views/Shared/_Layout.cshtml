@@ -4,6 +4,23 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Easy 地図録</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+        }
+        a{
+            color: white;
+        }
+        .autoInfoContainer {
+            margin: 10px 10px 10px 10px;
+            padding: 5px 5px 5px 5px;
+        }
+        .autoInfo {
+            border: 3px solid green;
+            padding: 5px 5px 5px 5px;
+        }
+    </style>
 </head>
 <body>
     <div>
@@ -22,6 +39,7 @@
     <div>
         @RenderBody()
     </div>
+    <script type="text/javascript" src="http://localhost:3000/static/js/bundle.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

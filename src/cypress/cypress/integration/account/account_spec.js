@@ -23,7 +23,7 @@ describe('account', () => {
         it('cannot access profile after logout', () => {
             cy.visit(`${common.baseUrl}${helper.loginPath}`);
             helper.login();
-            cy.contains('a', 'Logout').click()
+            cy.get('a').click().should('have.attr', 'href').and('include', 'Logout')
             let unaccessable = `${common.baseUrl}${helper.authenticationRequiredPath}`;
             cy.visit(unaccessable);
             cy.location().should((location) => {

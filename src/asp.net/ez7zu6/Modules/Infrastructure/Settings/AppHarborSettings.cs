@@ -1,4 +1,6 @@
-﻿namespace Infrastructure.Settings
+﻿using System;
+
+namespace Infrastructure.Settings
 {
     public class AppHarborSettings : BaseSettings
     {
@@ -6,6 +8,13 @@
         {
         }
 
-        protected override string GetConnectionString() => System.Environment.GetEnvironmentVariable("SQLSERVER_CONNECTION_STRING");
+        protected override string GetConnectionString()
+        {
+            var connectionString = System.Environment.GetEnvironmentVariable("SQLSERVER_CONNECTION_STRING");
+            if (string.IsNullOrWhiteSpace(connectionString))
+                throw new Exception("Environment Variable not Set");
+
+            return connectionString;
+        }
     }
 }

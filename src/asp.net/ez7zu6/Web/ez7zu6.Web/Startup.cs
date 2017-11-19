@@ -63,6 +63,11 @@ namespace ez7zu6.Web
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                    name: "Add Experience",
+                    template: "add",
+                    defaults: new { controller = "Experience", action = "Add" });
+
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });

@@ -17,6 +17,9 @@ create table ez7zu6.dbo.Accounts (
 	Username nvarchar(50) not null,
 	UserPassword binary(64) not null,
 	IsActive bit not null constraint DF_Accounts_IsActive default 1,
+	IsAnonymous bit not null constraint DF_Accounts_IsAnonymous default 1,
+	Created smalldatetime not null constraint DF_Accounts_Created default getdate(),
+	OptedIn smalldatetime null 
  constraint PK_Accounts primary key clustered 
 (
 	UserId asc
@@ -25,9 +28,9 @@ create table ez7zu6.dbo.Accounts (
 
 go
 
-insert ez7zu6.dbo.Accounts (UserId, Username, UserPassword, IsActive) 
+insert ez7zu6.dbo.Accounts (UserId, Username, UserPassword) 
 values 
-	(newid(), N'john@test.com', Convert(binary, ''), 1)
+	(newid(), N'john@test.com', Convert(binary, ''))
 
 go
 commit

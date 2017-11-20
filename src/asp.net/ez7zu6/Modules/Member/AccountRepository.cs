@@ -1,19 +1,14 @@
-﻿using System.Data.SqlClient;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Core;
-using Infrastructure.Settings;
+using Infrastructure.Database;
 
 namespace Member
 {
-    public class AccountRepository
+    public class AccountRepository : BaseRepository
     {
-        private readonly ISettings _settings;
-
-        public AccountRepository(IAppEnvironment appEnvironment) => _settings = new SetingsFactory().GetSettings(appEnvironment);
-
-        private SqlConnection GetConnection() => new SqlConnection(_settings.ConnectionString);
+        public AccountRepository(IAppEnvironment appEnvironment) : base(appEnvironment) { }
 
         public async Task<AccountQueryModel> GetAccountInfoByLoginPasswordAsync(string username, string password)
         {

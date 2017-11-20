@@ -23,9 +23,7 @@ describe('account', () => {
         it('cannot access profile after logout', () => {
             cy.visit(`${common.baseUrl}${helper.loginPath}`);
             helper.login();
-            // TODO - not sure why we can't specifiy this more .. will probably have to cy.visit the logout url
-            // cy.get('a').click().should('have.attr', 'href').and('include', 'Logout')
-            cy.get('a').click()
+            cy.get('a.glyphicon-log-out').click()
             let unaccessable = `${common.baseUrl}${helper.authenticationRequiredPath}`;
             cy.visit(unaccessable);
             cy.location().should((location) => {

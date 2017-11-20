@@ -8,12 +8,13 @@
   <ItemGroup>
     <PackageReference Include="FluentAssertions" version="4.18.0" />
     <PackageReference Include="NSpec" Version="3.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.1" />
   </ItemGroup>
 
-  <ItemGroup>
+  <!--<ItemGroup>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\newtonsoft.json\10.0.1\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
     </Reference>
-  </ItemGroup>
+  </ItemGroup>-->
 
 </Project>

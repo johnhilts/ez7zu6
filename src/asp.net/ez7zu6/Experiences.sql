@@ -23,7 +23,8 @@ create table ez7zu6.dbo.Experiences (
 	InputDateTime smalldatetime not null,
 	Created smalldatetime not null constraint DF_Experiences_Created default getdate(),
 	IsActive bit not null constraint DF_Experiences_IsActive default 1,
-	constraint FK_Experiences_UserId foreign key (UserId) references dbo.Accounts (UserId),
+	-- TODO: we need to insert a record into user table for anonymous
+	--constraint FK_Experiences_UserId foreign key (UserId) references dbo.Accounts (UserId),
  constraint PK_Experiences primary key clustered 
 (
 	ExperienceId asc

@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Member;
+using Core;
+using Newtonsoft.Json.Linq;
 
 namespace ez7zu6.Web.Controllers
 {
+    [Produces("application/json")]
     [Route("api/experience")]
     public class ExperienceApiController : Controller
     {
+        private readonly IAppEnvironment _appEnvironment;
+
+        public ExperienceApiController(IAppEnvironment appEnvironment) => _appEnvironment = appEnvironment;
+
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()
@@ -23,12 +31,25 @@ namespace ez7zu6.Web.Controllers
             return "value";
         }
 
-        // POST api/values
         [HttpPost]
-        public string Post(string Notes)
+        public async Task<IActionResult> Post([FromBody]ExperienceSaveModel model)
         {
-            // todo: should return http 201
-            return "OK"; 
+            //var notes = Notes.GetValue("Notes").ToString();
+            //ExperienceSaveModel model = new ExperienceSaveModel
+            //{
+            //    UserId = new Guid(),
+            //    Notes = notes,
+            //    InputDateTime = DateTime.Now,
+            //    Created = DateTime.Now,
+            //    IsActive = true,
+            //};
+            model.UserId = Guid.NewGuid();
+            model.InputDateTime = DateTime.Now;
+            await (new MemberService(_appEnvironment).SaveExperience(model));
+            // TODO: I want to return 201, and the inserted ID
+            //return Created(new Uri("http://localhost:17726/api/experience"), new CreatedResult(new Uri("http://localhost:17726/api/experience"), "OK"));
+            return Created(new Uri("http://localhost:17726/api/experience"), "OK");
+            //return "OK";
         }
 
         // PUT api/values/5

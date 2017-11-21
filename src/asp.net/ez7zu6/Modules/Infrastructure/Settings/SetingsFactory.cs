@@ -1,7 +1,7 @@
 ﻿using System.IO;
-using Core;
+using ez7zu6.Core;
 
-namespace Infrastructure.Settings
+namespace ez7zu6.Infrastructure.Settings
 {
     public class SetingsFactory
     {

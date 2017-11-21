@@ -4,8 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
-using Core;
-using Infrastructure.Environment;
+using ez7zu6.Core;
+using ez7zu6.Infrastructure.Environment;
 
 namespace ez7zu6.Web
 {

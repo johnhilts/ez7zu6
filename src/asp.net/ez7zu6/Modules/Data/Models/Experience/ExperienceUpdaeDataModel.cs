@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Data.Models.Experience
+namespace ez7zu6.Data.Models.Experience
 {
     public class ExperienceUpdaeDataModel
     {

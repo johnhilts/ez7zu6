@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Settings
+﻿namespace ez7zu6.Infrastructure.Settings
 {
     public class LocalSettings : BaseSettings
     {

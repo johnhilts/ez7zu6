@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
-using Core;
-using Data.Models.Experience;
-using Data.Repositories;
-using Member.Models;
+using ez7zu6.Core;
+using ez7zu6.Data.Models.Experience;
+using ez7zu6.Data.Repositories;
+using ez7zu6.Member.Models;
 
-namespace Member.Services
+namespace ez7zu6.Member.Services
 {
     public class MemberService
     {

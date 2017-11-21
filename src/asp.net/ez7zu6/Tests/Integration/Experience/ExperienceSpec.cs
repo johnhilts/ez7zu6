@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using NSpec;
 using FluentAssertions;
 
-namespace Integration.Experience
+namespace ez7zu6.Integration.Experience
 {
     public class ExperienceSpec : nspec
     {

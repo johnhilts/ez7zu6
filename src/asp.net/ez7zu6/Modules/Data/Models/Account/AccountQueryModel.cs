@@ -1,4 +1,4 @@
-﻿namespace Data.Models.Account
+﻿namespace ez7zu6.Data.Models.Account
 {
     public class AccountQueryModel
     {

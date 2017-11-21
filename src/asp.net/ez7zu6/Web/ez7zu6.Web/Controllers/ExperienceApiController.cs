@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Core;
-using Member.Models;
-using Member.Services;
+using ez7zu6.Core;
+using ez7zu6.Member.Models;
+using ez7zu6.Member.Services;
 
 namespace ez7zu6.Web.Controllers
 {

@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
-using Core;
-using Infrastructure.Database;
-using Data.Models.Account;
+using ez7zu6.Core;
+using ez7zu6.Infrastructure.Database;
+using ez7zu6.Data.Models.Account;
 
-namespace Data.Repositories
+namespace ez7zu6.Data.Repositories
 {
     public class AccountRepository : BaseRepository
     {

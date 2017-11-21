@@ -1,8 +1,8 @@
 ﻿using System.Data.SqlClient;
-using Core;
-using Infrastructure.Settings;
+using ez7zu6.Core;
+using ez7zu6.Infrastructure.Settings;
 
-namespace Infrastructure.Database
+namespace ez7zu6.Infrastructure.Database
 {
     public class BaseRepository
     {

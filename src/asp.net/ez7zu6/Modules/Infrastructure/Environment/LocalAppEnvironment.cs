@@ -1,6 +1,6 @@
-﻿using Core;
+﻿using ez7zu6.Core;
 
-namespace Infrastructure.Environment
+namespace ez7zu6.Infrastructure.Environment
 {
     public class LocalAppEnvironment : IAppEnvironment
     {

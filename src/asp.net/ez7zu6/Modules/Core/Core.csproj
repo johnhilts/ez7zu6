@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>ez7zu6.Core</RootNamespace>
   </PropertyGroup>
 
 </Project>

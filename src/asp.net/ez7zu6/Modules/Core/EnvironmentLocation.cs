@@ -1,4 +1,4 @@
-﻿namespace Core
+﻿namespace ez7zu6.Core
 {
     public enum EnvironmentLocation
     {

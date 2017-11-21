@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using NSpec;
-using System.IO;
-using NSpec.Api;
 using NSpec.Domain; // SpecFinder
 using NSpec.Domain.Formatters; // ConsoleFormatter
- 
-namespace Calculator.specs
+
+namespace ez7zu6.Integration
 {
     class Program 
     {

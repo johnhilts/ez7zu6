@@ -1,0 +1,40 @@
+anonymous users ...
+
+Trying to save some data, but didn't login?
+	show a nice alert with a link to let someone login WITHOUT MESSING UP WHATEVER IT WAS THAT THEY WERE DOING
+
+check for session cookie ... if not there, then add it, add new user, add to local storage
+	no expiration - the local storage will help with that!
+
+merge (reconciliation) 
+if you have a session cookie but are anonymous, then when you login, your session will just become un-anonymous!
+	no expiration for login
+
+
+
+***************
+add experience
+***************
+not logged in and no session id? add anonymous account, create session
+
+add anonymous account
+	AccountService.AddAnonymous()
+		add entry to session table - session ID and new User ID
+			also add entry to User table
+
+		return session ID
+
+ create session
+	ApplicationService.AddSession(sessionId, isAnonymous)
+
+== cookies ==
+1 cookie with multiple values
+Session ID - NOT the user ID ...
+Anonymous - true or false
+
+
+useful URLs:
+https://docs.microsoft.com/en-us/aspnet/web-api/overview/advanced/http-cookies <-- MOST useful!!
+https://msdn.microsoft.com/en-us/library/ms178194.aspx#Scenarios
+
+

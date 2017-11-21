@@ -1,7 +1,10 @@
-﻿using Core;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Core;
+using Data.Models.Experience;
+using Data.Repositories;
+using Member.Models;
 
-namespace Member
+namespace Member.Services
 {
     public class MemberService
     {

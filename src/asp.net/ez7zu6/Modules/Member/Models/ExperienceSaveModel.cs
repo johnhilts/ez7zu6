@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Member
+namespace Member.Models
 {
     public class ExperienceSaveModel
     {

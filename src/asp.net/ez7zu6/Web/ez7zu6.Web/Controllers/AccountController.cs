@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using ez7zu6.Web.Models.Account;
-using Member;
 using Core;
+using Member.Services;
 
 namespace ez7zu6.Web.Controllers
 {

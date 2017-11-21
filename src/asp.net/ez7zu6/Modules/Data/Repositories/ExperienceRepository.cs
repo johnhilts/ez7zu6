@@ -3,8 +3,9 @@ using System.Threading.Tasks;
 using Dapper;
 using Core;
 using Infrastructure.Database;
+using Data.Models.Experience;
 
-namespace Member
+namespace Data.Repositories
 {
     public class ExperienceRepository : BaseRepository
     {

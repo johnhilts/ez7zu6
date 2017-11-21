@@ -1,4 +1,4 @@
-﻿namespace Member
+﻿namespace Data.Models.Account
 {
     public class AccountQueryModel
     {

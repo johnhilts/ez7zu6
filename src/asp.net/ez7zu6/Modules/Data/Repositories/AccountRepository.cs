@@ -11,13 +11,13 @@ namespace ez7zu6.Data.Repositories
     {
         public AccountRepository(IAppEnvironment appEnvironment) : base(appEnvironment) { }
 
-        public async Task<AccountQueryModel> GetAccountInfoByLoginPasswordAsync(string username, string password)
+        public async Task<AccountQueryModel> GetUserInfoByUsernameAndPassword(string username, string password)
         {
             using (var db = GetConnection())
             {
                 // todo: add password check too!
                 const string query = @"
-select Username, UserPassword
+select UserId, Username, UserPassword
 from dbo.Accounts (nolock) 
 where Username = @Username 
 and IsActive = 1";

@@ -9,8 +9,11 @@ namespace ez7zu6.Web.Services
 {
     public class PresentationService
     {
+        private readonly HttpContext _context;
+
         public PresentationService(HttpContext context)
         {
+            _context = context;
         }
 
         public bool IsAnonymousSession()
@@ -27,7 +30,7 @@ namespace ez7zu6.Web.Services
             }
             else
             {
-                return new UserSession { SessionId = Guid.NewGuid(), UserId = Guid.NewGuid(), };
+                return new SessionService(_context).CreateNewSession();
             }
         }
     }

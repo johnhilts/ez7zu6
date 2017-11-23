@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using ez7zu6.Web.Models.Account;
 using ez7zu6.Core;
 using ez7zu6.Member.Services;
+using ez7zu6.Member.Models;
 
 namespace ez7zu6.Web.Controllers
 {
@@ -30,22 +31,22 @@ namespace ez7zu6.Web.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            var canAuthenticate = await (new MemberService(_appEnvironment)).CanAuthenticateUser(model.Username, model.Password);
-            if (!canAuthenticate)
+            var userInfo = await (new MemberService(_appEnvironment)).GetUserInfoByUsernameAndPassword(model.Username, model.Password);
+            if (!userInfo.CanAuthenticate)
             {
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                 return View();
             }
 
-            var identity = new ClaimsIdentity(LoadClaims(model), "login");
+            var identity = new ClaimsIdentity(LoadClaims(userInfo), "login");
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
 
             return Redirect(returnUrl);
         }
 
-        private Claim[] LoadClaims(LoginViewModel model)
+        private Claim[] LoadClaims(UserInfoModel model)
         {
-            var claims = new[] { new Claim(ClaimTypes.Name, model.Username), };
+            var claims = new[] { new Claim(ClaimTypes.Name, model.Username),  new Claim(ClaimTypes.PrimarySid, model.UserId.ToString()), };
             return claims;
         }
 

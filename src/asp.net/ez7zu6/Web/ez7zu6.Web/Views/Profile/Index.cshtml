@@ -1,3 +1,11 @@
-﻿<title>Profile</title>
+﻿@using System.Security.Claims
+<title>Profile</title>
 <h2>This is the Profile Page</h2>
 
+<div>User Name: @base.Context.User.Identity.Name </div>
+@{ 
+    foreach(var c in Context.User.Claims)
+    {
+        <div>@c.Type = @c.Value</div>
+    }
+}

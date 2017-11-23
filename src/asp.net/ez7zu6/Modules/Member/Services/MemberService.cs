@@ -12,10 +12,17 @@ namespace ez7zu6.Member.Services
 
         public MemberService(IAppEnvironment appEnvironment) => _appEnvironment = appEnvironment;
 
-        public async Task<bool> CanAuthenticateUser(string username, string password)
+        public async Task<UserInfoModel> GetUserInfoByUsernameAndPassword(string username, string password)
         {
-            var model = await (new AccountRepository(_appEnvironment)).GetAccountInfoByLoginPasswordAsync(username, password);
-            return !model.NoMatch;
+            var queryModel = await (new AccountRepository(_appEnvironment)).GetUserInfoByUsernameAndPassword(username, password);
+            if (queryModel.NoMatch)
+            {
+                return new UserInfoModel { UserId = null, Username = null, CanAuthenticate = false, };
+            }
+            else
+            {
+                return new UserInfoModel { UserId = queryModel.UserId, Username = queryModel.Username, CanAuthenticate = true, };
+            }
         }
 
         public async Task<int> SaveExperience(ExperienceSaveModel model)

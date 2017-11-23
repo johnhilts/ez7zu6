@@ -10,7 +10,7 @@ namespace ez7zu6.Web.Controllers
 {
     [Produces("application/json")]
     [Route("api/experience")]
-    public class ExperienceApiController : Controller
+    public class ExperienceApiController : BaseController
     {
         private readonly IAppEnvironment _appEnvironment;
 
@@ -42,7 +42,11 @@ namespace ez7zu6.Web.Controllers
             //    Created = DateTime.Now,
             //    IsActive = true,
             //};
-            model.UserId = Guid.NewGuid();
+            if (_presentationService.IsAnonymousSession())
+            {
+                var userSession = _presentationService.GetOrCreateUserSession(null);
+                model.UserId = userSession.UserId;
+            }
             model.InputDateTime = DateTime.Now;
             await (new MemberService(_appEnvironment).SaveExperience(model));
             // TODO: I want to return 201, and the inserted ID

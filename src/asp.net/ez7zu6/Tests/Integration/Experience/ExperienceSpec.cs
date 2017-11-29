@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Net;
+using System.Collections.Specialized;
 using Newtonsoft.Json;
 using NSpec;
 using FluentAssertions;
@@ -29,6 +31,12 @@ namespace ez7zu6.Integration.Experience
                       //actual.Value.Should().Be(expected);
                       response.StatusCode.Should().Be(HttpStatusCode.Created);
                       actual.Should().Be(expected);
+
+                      var expectedCookies = new StringDictionary() { { "UserSession", Guid.NewGuid().ToString() }, { "IsAnonymous", "True" }, };
+                      var actualCookies = response.Headers.GetValues("Set-Cookie");
+                      Guid.TryParse(actualCookies.Single(x => x.Contains("UserSession")).Split('=')[1].Split(';')[0], out Guid throwawayGuid).Should().Be(true);
+                      bool.TryParse(actualCookies.Single(x => x.Contains("IsAnonymous")).Split('=')[1].Split(';')[0], out bool isAnonymous).Should().Be(true);
+                      isAnonymous.Should().Be(true);
                   };
             };
         }

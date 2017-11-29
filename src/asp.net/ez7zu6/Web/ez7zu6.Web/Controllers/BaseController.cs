@@ -1,19 +1,11 @@
-﻿using ez7zu6.Web.Services;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
+using ez7zu6.Web.Services;
 
 namespace ez7zu6.Web.Controllers
 {
     public class BaseController : Controller
     {
-        protected readonly PresentationService _presentationService;
-
-        public BaseController()
-        {
-            _presentationService = new PresentationService(HttpContext);
-        }
+        private PresentationService _presentationService;
+        protected PresentationService PresentationService => _presentationService ?? (_presentationService = new PresentationService(HttpContext));
     }
 }

@@ -42,9 +42,9 @@ namespace ez7zu6.Web.Controllers
             //    Created = DateTime.Now,
             //    IsActive = true,
             //};
-            if (_presentationService.IsAnonymousSession())
+            if (PresentationService.IsAnonymousSession())
             {
-                var userSession = _presentationService.GetOrCreateUserSession(null);
+                var userSession = PresentationService.GetOrCreateUserSession(null);
                 model.UserId = userSession.UserId;
             }
             model.InputDateTime = DateTime.Now;

@@ -14,11 +14,18 @@ namespace ez7zu6.Web
     {
         public static void Main(string[] args)
         {
+
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json");
+
+            var config = builder.Build();
+
             BuildWebHost(args).Run();
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+            WebHost.CreateDefaultBuilder(args) // this line is using the {env.EnvironmentName}.json - need to break this apart
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();

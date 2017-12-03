@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using ez7zu6.Core;
 using ez7zu6.Member.Models;
 using ez7zu6.Member.Services;
@@ -12,9 +13,9 @@ namespace ez7zu6.Web.Controllers
     [Route("api/experience")]
     public class ExperienceApiController : BaseController
     {
-        private readonly IAppEnvironment _appEnvironment;
-
-        public ExperienceApiController(IAppEnvironment appEnvironment) => _appEnvironment = appEnvironment;
+        public ExperienceApiController(IOptions<SiteSettings> siteSettings, IAppEnvironment appEnvironment) : base(siteSettings, appEnvironment)
+        {
+        }
 
         // GET api/values
         [HttpGet]
@@ -51,7 +52,7 @@ namespace ez7zu6.Web.Controllers
             await (new MemberService(_appEnvironment).SaveExperience(model));
             // TODO: I want to return 201, and the inserted ID
             //return Created(new Uri("http://localhost:17726/api/experience"), new CreatedResult(new Uri("http://localhost:17726/api/experience"), "OK"));
-            return Created(new Uri("http://localhost:17726/api/experience"), "OK");
+            return Created(new Uri($"{_siteSettings.Value.Domain}/api/experience"), "OK");
             //return "OK";
         }
 

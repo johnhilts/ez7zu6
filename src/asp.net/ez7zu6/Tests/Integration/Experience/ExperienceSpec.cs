@@ -37,6 +37,11 @@ namespace ez7zu6.Integration.Experience
                       Guid.TryParse(actualCookies.Single(x => x.Contains("UserSession")).Split('=')[1].Split(';')[0], out Guid throwawayGuid).Should().Be(true);
                       bool.TryParse(actualCookies.Single(x => x.Contains("IsAnonymous")).Split('=')[1].Split(';')[0], out bool isAnonymous).Should().Be(true);
                       isAnonymous.Should().Be(true);
+
+                      var expectedLocation = "http://localhost:17726/api/experience";
+                      var actualLocation = response.Headers.GetValues("Location").FirstOrDefault();
+                      expectedLocation.Should().Be(actualLocation);
+
                   };
             };
         }

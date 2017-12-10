@@ -12,6 +12,9 @@ namespace ez7zu6.Integration.Experience
 {
     public class ExperienceSpec : nspec
     {
+        private string _domain = null;
+        private string Domain => _domain ?? (_domain = "http://localhost:17726");
+
         void experience_rest_api()
         {
             context["adding"] = () =>
@@ -38,9 +41,9 @@ namespace ez7zu6.Integration.Experience
                       bool.TryParse(actualCookies.Single(x => x.Contains("IsAnonymous")).Split('=')[1].Split(';')[0], out bool isAnonymous).Should().Be(true);
                       isAnonymous.Should().Be(true);
 
-                      var expectedLocation = "http://localhost:17726/api/experience";
+                      var expectedLocation = $"{Domain}/api/experience";
                       var actualLocation = response.Headers.GetValues("Location").FirstOrDefault();
-                      expectedLocation.Should().Be(actualLocation);
+                      actualLocation.Should().Be(expectedLocation);
 
                   };
             };

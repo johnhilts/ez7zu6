@@ -49,11 +49,8 @@ namespace ez7zu6.Web.Controllers
                 model.UserId = userSession.UserId;
             }
             model.InputDateTime = DateTime.Now;
-            await (new MemberService(_appEnvironment).SaveExperience(model));
-            // TODO: I want to return 201, and the inserted ID
-            //return Created(new Uri("http://localhost:17726/api/experience"), new CreatedResult(new Uri("http://localhost:17726/api/experience"), "OK"));
-            return Created(new Uri($"{_siteSettings.Value.Domain}/api/experience"), "OK");
-            //return "OK";
+            var experienceId = await (new MemberService(_appEnvironment).SaveExperience(model));
+            return Created(new Uri($"{_siteSettings.Value.Domain}/api/experience"), experienceId);
         }
 
         // PUT api/values/5

@@ -26,25 +26,23 @@ namespace ez7zu6.Integration.Experience
                       var client = new HttpClient();
                       var url = new Uri("http://localhost.:17726/api/experience");
                       var response = await client.PostAsync(url, new StringContent(json, Encoding.UTF8, "application/json"));
-                      var expected = "OK";
+                      var expected = new ExpectedResponse { Value = "OK", /* change this to added ID; we need to check if it's a GUID*/
+                          StatusCode = HttpStatusCode.Created, IsAnonymous = true, Location = $"{Domain}/api/experience",
+                          Cookies = new StringDictionary() { { "IsAnonymous", "True" }, } };
                       var jsonResponse = await response.Content.ReadAsStringAsync();
-                      var actual = JsonConvert.DeserializeObject<string>(jsonResponse);
-                      //var actual = JsonConvert.DeserializeObject<ExperienceAddResponse>(jsonResponse);
-                      //actual.StatusCode.Should().Be((int)HttpStatusCode.Created);
-                      //actual.Value.Should().Be(expected);
-                      response.StatusCode.Should().Be(HttpStatusCode.Created);
-                      actual.Should().Be(expected);
+                      var actual = new ExpectedResponse { Value = JsonConvert.DeserializeObject<string>(jsonResponse) };
+                      actual.StatusCode = response.StatusCode;
 
-                      var expectedCookies = new StringDictionary() { { "UserSession", Guid.NewGuid().ToString() }, { "IsAnonymous", "True" }, };
+                      // var expectedCookies = new StringDictionary() { { "UserSession", Guid.NewGuid().ToString() }, { "IsAnonymous", "True" }, };
                       var actualCookies = response.Headers.GetValues("Set-Cookie");
-                      Guid.TryParse(actualCookies.Single(x => x.Contains("UserSession")).Split('=')[1].Split(';')[0], out Guid throwawayGuid).Should().Be(true);
+                      Guid.TryParse(actualCookies.Single(x => x.Contains("UserSession")).Split('=')[1].Split(';')[0], out Guid userSessionId).Should().Be(true);
                       bool.TryParse(actualCookies.Single(x => x.Contains("IsAnonymous")).Split('=')[1].Split(';')[0], out bool isAnonymous).Should().Be(true);
-                      isAnonymous.Should().Be(true);
+                      actual.Cookies = new StringDictionary() { { "IsAnonymous", isAnonymous.ToString() }, };
+                      actual.IsAnonymous = isAnonymous;
 
-                      var expectedLocation = $"{Domain}/api/experience";
-                      var actualLocation = response.Headers.GetValues("Location").FirstOrDefault();
-                      actualLocation.Should().Be(expectedLocation);
+                      actual.Location = response.Headers.GetValues("Location").FirstOrDefault();
 
+                      actual.ShouldBeEquivalentTo(expected);
                   };
             };
         }
@@ -55,10 +53,14 @@ namespace ez7zu6.Integration.Experience
         public string Notes { get; set; }
     }
 
-public class ExperienceAddResponse
+    public class ExpectedResponse
     {
-        public int StatusCode { get; set; }
+        public HttpStatusCode StatusCode { get; set; }
         public string Value { get; set; }
+        public bool IsAnonymous { get; set; }
+        public string Location { get; set; }
+        public StringDictionary Cookies { get; set; }
     }
+
 }
 

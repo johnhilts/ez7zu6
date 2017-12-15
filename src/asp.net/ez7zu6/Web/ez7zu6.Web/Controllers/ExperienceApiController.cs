@@ -17,11 +17,12 @@ namespace ez7zu6.Web.Controllers
         {
         }
 
-        // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+            var userSession = PresentationService.GetOrCreateUserSession(null);
+            var experiences = await (new MemberService(_appEnvironment).GetExperiences(userSession.UserId));
+            return Ok(experiences);
         }
 
         // GET api/values/5

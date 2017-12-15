@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using ez7zu6.Core;
 using ez7zu6.Data.Models.Experience;
 using ez7zu6.Data.Repositories;
@@ -23,6 +25,24 @@ namespace ez7zu6.Member.Services
             {
                 return new UserInfoModel { UserId = queryModel.UserId, Username = queryModel.Username, CanAuthenticate = true, };
             }
+        }
+
+        public async Task<List<ExperienceQueryModel>> GetExperiences(Guid userId)
+        {
+            return new List<ExperienceQueryModel>()
+            {
+                new ExperienceQueryModel
+                {
+                    ExperienceId=123,
+                    Notes="notes for 123",
+                }
+                ,
+                new ExperienceQueryModel
+                {
+                    ExperienceId=456,
+                    Notes="notes for 456",
+                }
+            };
         }
 
         public async Task<int> SaveExperience(ExperienceSaveModel model)

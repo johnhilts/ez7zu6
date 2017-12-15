@@ -28,6 +28,13 @@ namespace ez7zu6.Integration.Experience
                       // should be able to go to the list and located experience ID at the top of new experiences
                       // remember to re-use http client!! and I guess make it static?? (only if necessary)
                   };
+
+                itAsync["can see an experience in a list after adding it"] = async () =>
+                {
+                    var experience = await AddExperience();
+                    // make a GET request and get the list of experiences
+                    // verify that the added experience is in the list
+                };
             };
         }
 

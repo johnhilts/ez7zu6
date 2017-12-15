@@ -43,10 +43,16 @@ namespace ez7zu6.Web.Controllers
             //    Created = DateTime.Now,
             //    IsActive = true,
             //};
+            // TODO: this whole approach looks very unDRY ... need to cleanup!
             if (PresentationService.IsAnonymousSession())
             {
                 var userSession = PresentationService.GetOrCreateUserSession(null);
                 model.UserId = userSession.UserId;
+            }
+            else
+            {
+                // not sure about this 
+                var userSession = PresentationService.GetOrCreateUserSession(model.UserId);
             }
             model.InputDateTime = DateTime.Now;
             var experienceId = await (new MemberService(_appEnvironment).SaveExperience(model));

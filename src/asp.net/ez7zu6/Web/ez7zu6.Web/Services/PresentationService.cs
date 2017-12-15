@@ -22,12 +22,11 @@ namespace ez7zu6.Web.Services
         {
             if (userId.HasValue)
             {
-                // get existing user session
-                return null;
+                return new SessionService(_context).GetSessionByUserId(userId.Value);
             }
             else
             {
-                return new SessionService(_context).CreateNewSession(true, userId);
+                return new SessionService(_context).GetOrCreateNewSession(true, userId);
             }
         }
     }

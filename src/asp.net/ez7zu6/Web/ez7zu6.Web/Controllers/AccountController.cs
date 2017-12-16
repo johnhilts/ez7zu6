@@ -38,6 +38,7 @@ namespace ez7zu6.Web.Controllers
                 return View();
             }
 
+            // TODO: this needs to go to session service "add non-anonymous"
             var identity = new ClaimsIdentity(LoadClaims(userInfo), "login");
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
 
@@ -53,6 +54,7 @@ namespace ez7zu6.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
+            // TODO: this needs to go to session service "remove"
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Redirect("/");
         }

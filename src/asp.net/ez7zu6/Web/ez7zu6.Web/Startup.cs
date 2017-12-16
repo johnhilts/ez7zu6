@@ -30,6 +30,8 @@ namespace ez7zu6.Web
             services.Configure<AppSettings>(Configuration);
             services.Configure<SiteSettings>(Configuration.GetSection("SiteSettings"));
 
+            services.AddMemoryCache();
+
             services.AddMvc();
 
             // enable cookie-based auth - see here: https://docs.microsoft.com/en-us/aspnet/core/security/authentication/cookie?tabs=aspnetcore2x

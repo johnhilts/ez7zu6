@@ -1,33 +1,24 @@
 ﻿using ez7zu6.Infrastructure.Account;
 using Microsoft.AspNetCore.Http;
-using System;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace ez7zu6.Web.Services
 {
     public class PresentationService
     {
         private readonly HttpContext _context;
+        private readonly IMemoryCache _memoryCache;
 
-        public PresentationService(HttpContext context)
+        public PresentationService(HttpContext context, IMemoryCache memoryCache)
         {
             _context = context;
+            _memoryCache = memoryCache;
         }
 
-        public bool IsAnonymousSession()
+        public UserSession GetOrCreateUserSession()
         {
-            return true;
+            return new SessionService(_context, _memoryCache).GetOrCreateNewSession();
         }
 
-        public UserSession GetOrCreateUserSession(Guid? userId)
-        {
-            if (userId.HasValue)
-            {
-                return new SessionService(_context).GetSessionByUserId(userId.Value);
-            }
-            else
-            {
-                return new SessionService(_context).GetOrCreateNewSession(true, userId);
-            }
-        }
     }
 }

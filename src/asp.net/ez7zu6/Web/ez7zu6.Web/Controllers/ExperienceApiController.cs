@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Caching.Memory;
 using ez7zu6.Core;
 using ez7zu6.Member.Models;
 using ez7zu6.Member.Services;
@@ -13,14 +13,14 @@ namespace ez7zu6.Web.Controllers
     [Route("api/experience")]
     public class ExperienceApiController : BaseController
     {
-        public ExperienceApiController(IOptions<SiteSettings> siteSettings, IAppEnvironment appEnvironment) : base(siteSettings, appEnvironment)
+        public ExperienceApiController(IOptions<SiteSettings> siteSettings, IAppEnvironment appEnvironment, IMemoryCache memoryCache) : base(siteSettings, appEnvironment, memoryCache)
         {
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var userSession = PresentationService.GetOrCreateUserSession(null);
+            var userSession = PresentationService.GetOrCreateUserSession();
             var experiences = await (new MemberService(_appEnvironment).GetExperiences(userSession.UserId));
             return Ok(experiences);
         }
@@ -44,17 +44,7 @@ namespace ez7zu6.Web.Controllers
             //    Created = DateTime.Now,
             //    IsActive = true,
             //};
-            // TODO: this whole approach looks very unDRY ... need to cleanup!
-            if (PresentationService.IsAnonymousSession())
-            {
-                var userSession = PresentationService.GetOrCreateUserSession(null);
-                model.UserId = userSession.UserId;
-            }
-            else
-            {
-                // not sure about this 
-                var userSession = PresentationService.GetOrCreateUserSession(model.UserId);
-            }
+            var userSession = PresentationService.GetOrCreateUserSession();
             model.InputDateTime = DateTime.Now;
             var experienceId = await (new MemberService(_appEnvironment).SaveExperience(model, userSession.UserId));
             return Created(new Uri($"{_siteSettings.Value.Domain}/api/experience"), experienceId);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using ez7zu6.Core;
@@ -29,20 +30,10 @@ namespace ez7zu6.Member.Services
 
         public async Task<List<ExperienceQueryModel>> GetExperiences(Guid userId)
         {
-            return new List<ExperienceQueryModel>()
-            {
-                new ExperienceQueryModel
-                {
-                    ExperienceId=123,
-                    Notes="notes for 123",
-                }
-                ,
-                new ExperienceQueryModel
-                {
-                    ExperienceId=456,
-                    Notes="notes for 456",
-                }
-            };
+            var experiencesData = await (new ExperienceRepository(_appEnvironment)).GetExperiencesByUserId(userId);
+            var experiences = experiencesData
+                .Select(data => new ExperienceQueryModel { ExperienceId = data.ExperienceId, Notes = data.Notes, InputDateTime = data.InputDateTime });
+            return experiences.ToList();
         }
 
         public async Task<int> SaveExperience(ExperienceSaveModel model, Guid userId)

@@ -56,7 +56,7 @@ namespace ez7zu6.Web.Controllers
                 var userSession = PresentationService.GetOrCreateUserSession(model.UserId);
             }
             model.InputDateTime = DateTime.Now;
-            var experienceId = await (new MemberService(_appEnvironment).SaveExperience(model));
+            var experienceId = await (new MemberService(_appEnvironment).SaveExperience(model, userSession.UserId));
             return Created(new Uri($"{_siteSettings.Value.Domain}/api/experience"), experienceId);
         }
 

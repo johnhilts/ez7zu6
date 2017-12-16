@@ -45,11 +45,11 @@ namespace ez7zu6.Member.Services
             };
         }
 
-        public async Task<int> SaveExperience(ExperienceSaveModel model)
+        public async Task<int> SaveExperience(ExperienceSaveModel model, Guid userId)
         {
             var dataModel = new ExperienceUpdaeDataModel
             {
-                UserId = model.UserId,
+                UserId = userId,
                 Notes = model.Notes,
                 InputDateTime = model.InputDateTime,
             };

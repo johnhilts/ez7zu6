@@ -33,7 +33,18 @@ namespace ez7zu6.Web.Services
             var identity = new ClaimsIdentity(LoadClaims(userInfo), "login");
             await _context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
 
+            CreateNewAuthenticatedSession(userInfo);
+
             return userInfo;
+        }
+
+        private UserSession CreateNewAuthenticatedSession(UserInfoModel userInfo)
+        {
+            var userSession = new UserSession { UserId = userInfo.UserId.Value, SessionId = Guid.NewGuid(), IsAnonymous = false, };
+            CreateSessionCookie(userSession);
+            AddSessionToCache(userSession);
+
+            return userSession;
         }
 
         private Claim[] LoadClaims(UserInfoModel model)

@@ -1,7 +1,14 @@
 ﻿using System;
+using System.Threading.Tasks;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Caching.Memory;
+using ez7zu6.Core;
 using ez7zu6.Infrastructure.Account;
+using ez7zu6.Member.Models;
+using ez7zu6.Member.Services;
 
 namespace ez7zu6.Web.Services
 {
@@ -9,11 +16,30 @@ namespace ez7zu6.Web.Services
     {
         private readonly HttpContext _context;
         private readonly IMemoryCache _memoryCache;
+        private readonly IAppEnvironment _appEnvironment;
 
-        public SessionService(HttpContext context, IMemoryCache memoryCache)
+        public SessionService(HttpContext context, IMemoryCache memoryCache, IAppEnvironment appEnvironment)
         {
             _context = context;
             _memoryCache = memoryCache;
+            _appEnvironment = appEnvironment;
+        }
+
+        public async Task<UserInfoModel> CreateNewAuthenticatedSession(string username, string password)
+        {
+            var userInfo = await (new MemberService(_appEnvironment)).GetUserInfoByUsernameAndPassword(username, password);
+            if (!userInfo.CanAuthenticate) return userInfo;
+
+            var identity = new ClaimsIdentity(LoadClaims(userInfo), "login");
+            await _context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+
+            return userInfo;
+        }
+
+        private Claim[] LoadClaims(UserInfoModel model)
+        {
+            var claims = new[] { new Claim(ClaimTypes.Name, model.Username),  new Claim(ClaimTypes.PrimarySid, model.UserId.ToString()), };
+            return claims;
         }
 
         public UserSession GetOrCreateNewSession()

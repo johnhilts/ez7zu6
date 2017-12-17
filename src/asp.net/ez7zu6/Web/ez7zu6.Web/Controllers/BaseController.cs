@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Caching.Memory;
-using ez7zu6.Web.Services;
 using ez7zu6.Core;
+using ez7zu6.Web.Services;
 
 namespace ez7zu6.Web.Controllers
 {
@@ -11,7 +11,7 @@ namespace ez7zu6.Web.Controllers
         private readonly IMemoryCache _memoryCache;
 
         private PresentationService _presentationService;
-        protected PresentationService PresentationService => _presentationService ?? (_presentationService = new PresentationService(HttpContext, _memoryCache));
+        protected PresentationService PresentationService => _presentationService ?? (_presentationService = new PresentationService(HttpContext, _memoryCache, _appEnvironment));
 
         protected readonly IOptions<SiteSettings> _siteSettings;
         protected readonly IAppEnvironment _appEnvironment;

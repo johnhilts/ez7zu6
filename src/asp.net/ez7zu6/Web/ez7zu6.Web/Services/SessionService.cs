@@ -120,7 +120,7 @@ namespace ez7zu6.Web.Services
             _context.Response.Cookies.Append("IsAnonymous", userSession.IsAnonymous.ToString(), options);
         }
 
-        public async Task<bool> RemoveSession()
+        public async Task RemoveSession()
         {
             await _context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             var userSession = GetExistingSession();
@@ -129,8 +129,6 @@ namespace ez7zu6.Web.Services
                 RemoveSessionCookie(userSession);
                 RemoveSessionFromCache(userSession);
             }
-
-            return true;
         }
 
         private void RemoveSessionCookie(UserSession userSession)
@@ -144,14 +142,19 @@ namespace ez7zu6.Web.Services
 
         private void RemoveSessionFromCache(UserSession userSession)
         {
-            SetCache(userSession.SessionId, Guid.Empty, 0);
+            SetCache(userSession.SessionId, Guid.Empty, TimeSpan.FromMilliseconds(1));
         }
 
         private void SetCache(Guid key, Guid value, int expirationInMinutes)
         {
+            SetCache(key, value, TimeSpan.FromMinutes(expirationInMinutes));
+        }
+
+        private void SetCache(Guid key, Guid value, TimeSpan expiration)
+        {
             var cacheEntryOptions = new MemoryCacheEntryOptions()
                         // Keep in cache for this time, reset time if accessed.
-                        .SetSlidingExpiration(TimeSpan.FromMinutes(expirationInMinutes));
+                        .SetSlidingExpiration(expiration);
             _memoryCache.Set(key, value, cacheEntryOptions);
         }
 

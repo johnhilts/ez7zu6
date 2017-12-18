@@ -59,7 +59,6 @@ namespace ez7zu6.Web.Services
             return userSession;
         }
 
-        // TODO: we have to be able to create new non-anonymous sessions too - we'll do that when we login
         private UserSession CreateNewAnonymousSession()
         {
             var userSession = new UserSession { UserId = Guid.NewGuid(), SessionId = Guid.NewGuid(), IsAnonymous = true, };
@@ -79,10 +78,9 @@ namespace ez7zu6.Web.Services
         {
             var isAnonymous = false;
             var cookieSessionExists =
-                // TODO: add constants for cookie keys
-                Guid.TryParse(_context.Request.Cookies["UserSession"]?.ToString() ?? string.Empty, out Guid userSessionId)
+                Guid.TryParse(_context.Request.Cookies[Constants.UserSessionCookieKey]?.ToString() ?? string.Empty, out Guid userSessionId)
                 &&
-                bool.TryParse(_context.Request.Cookies["IsAnonymous"]?.ToString() ?? string.Empty, out isAnonymous);
+                bool.TryParse(_context.Request.Cookies[Constants.IsAnonymousCookieKey]?.ToString() ?? string.Empty, out isAnonymous);
             if (cookieSessionExists)
             {
                 return GetExistingSession(userSessionId, isAnonymous);
@@ -116,8 +114,8 @@ namespace ez7zu6.Web.Services
             var cookieDefaultExpiration = DateTime.Now.AddYears(50);
             var options = new CookieOptions { Expires = cookieDefaultExpiration, };
 
-            _context.Response.Cookies.Append("UserSession", userSession.SessionId.ToString(), options);
-            _context.Response.Cookies.Append("IsAnonymous", userSession.IsAnonymous.ToString(), options);
+            _context.Response.Cookies.Append(Constants.UserSessionCookieKey, userSession.SessionId.ToString(), options);
+            _context.Response.Cookies.Append(Constants.IsAnonymousCookieKey, userSession.IsAnonymous.ToString(), options);
         }
 
         public async Task RemoveSession()
@@ -136,8 +134,8 @@ namespace ez7zu6.Web.Services
             var cookieRemoveExpiration = DateTime.Now.AddDays(-1);
             var options = new CookieOptions { Expires = cookieRemoveExpiration, };
 
-            _context.Response.Cookies.Append("UserSession", userSession.SessionId.ToString(), options);
-            _context.Response.Cookies.Append("IsAnonymous", userSession.IsAnonymous.ToString(), options);
+            _context.Response.Cookies.Append(Constants.UserSessionCookieKey, userSession.SessionId.ToString(), options);
+            _context.Response.Cookies.Append(Constants.IsAnonymousCookieKey, userSession.IsAnonymous.ToString(), options);
         }
 
         private void RemoveSessionFromCache(UserSession userSession)

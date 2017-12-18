@@ -27,7 +27,7 @@ namespace ez7zu6.Data.Repositories
             }
         }
 
-        // TODO: add a sort order field like we had in the weather app
+        // TODO: add a sort order on the fly, then work off of that ... we will need to track the "previous" sort number, though, like in the weather app
         public async Task<List<ExperienceQueryDataModel>> GetExperiencesByUserId(Guid userId)
         {
             var take = 4; // TODO: get from configuration / settings

@@ -72,10 +72,7 @@ namespace ez7zu6.Web.Services
 
         private void AddSessionToCache(UserSession userSession)
         {
-            var cacheEntryOptions = new MemoryCacheEntryOptions()
-                        // Keep in cache for this time, reset time if accessed.
-                        .SetSlidingExpiration(TimeSpan.FromMinutes(20));
-            _memoryCache.Set(userSession.SessionId, userSession.UserId, cacheEntryOptions);
+            SetCache(userSession.SessionId, userSession.UserId, 20);
         }
 
         private UserSession GetExistingSession()
@@ -123,8 +120,40 @@ namespace ez7zu6.Web.Services
             _context.Response.Cookies.Append("IsAnonymous", userSession.IsAnonymous.ToString(), options);
         }
 
-        public void RemoveSession(Guid sessionId)
+        public async Task<bool> RemoveSession()
         {
+            await _context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var userSession = GetExistingSession();
+            if (userSession != null)
+            {
+                RemoveSessionCookie(userSession);
+                RemoveSessionFromCache(userSession);
+            }
+
+            return true;
         }
+
+        private void RemoveSessionCookie(UserSession userSession)
+        {
+            var cookieRemoveExpiration = DateTime.Now.AddDays(-1);
+            var options = new CookieOptions { Expires = cookieRemoveExpiration, };
+
+            _context.Response.Cookies.Append("UserSession", userSession.SessionId.ToString(), options);
+            _context.Response.Cookies.Append("IsAnonymous", userSession.IsAnonymous.ToString(), options);
+        }
+
+        private void RemoveSessionFromCache(UserSession userSession)
+        {
+            SetCache(userSession.SessionId, Guid.Empty, 0);
+        }
+
+        private void SetCache(Guid key, Guid value, int expirationInMinutes)
+        {
+            var cacheEntryOptions = new MemoryCacheEntryOptions()
+                        // Keep in cache for this time, reset time if accessed.
+                        .SetSlidingExpiration(TimeSpan.FromMinutes(expirationInMinutes));
+            _memoryCache.Set(key, value, cacheEntryOptions);
+        }
+
     }
 }

@@ -31,5 +31,9 @@ namespace ez7zu6.Web.Services
             return new SessionService(_context, _memoryCache, _appEnvironment).GetOrCreateNewSession();
         }
 
+        public async Task<bool> RemoveSession()
+        {
+            return await new SessionService(_context, _memoryCache, _appEnvironment).RemoveSession();
+        }
     }
 }

@@ -44,8 +44,7 @@ namespace ez7zu6.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
-            // TODO: this needs to go to session service "remove"
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await PresentationService.RemoveSession();
             return Redirect("/");
         }
     }

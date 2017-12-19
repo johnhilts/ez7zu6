@@ -14,10 +14,13 @@ namespace ez7zu6.Web
     {
         public static void Main(string[] args)
         {
+            // TODO: need to DRY
+            bool.TryParse(System.Environment.GetEnvironmentVariable("IS_APPHARBOR"), out bool isAppHarbor);
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json");
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile($"appsettings.AppHarbor.json", isAppHarbor, true);
 
             var config = builder.Build();
 

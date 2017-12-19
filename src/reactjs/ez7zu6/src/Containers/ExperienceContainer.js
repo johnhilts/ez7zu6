@@ -8,8 +8,7 @@ class ExperienceContainer extends Component {
 
       this.handleSaveInfo = this.handleSaveInfo.bind(this);
 
-      const config = { apiDomain: 'http://localhost:17726' }
-      this.experienceUrl = `${config.apiDomain}/api/experience`
+      this.experienceUrl = '/api/experience'
 
       this.state = { 'experiences': [], }
     }
@@ -27,10 +26,8 @@ class ExperienceContainer extends Component {
         event.preventDefault();
 
         let notes = event.target[0].value
-        let timestamp = (new Date()).getTime();
 
-        let config = {apiDomain: 'http://localhost:17726'};
-        axios.post(`${config.apiDomain}/api/experience`, {
+        axios.post('/api/experience', {
             Notes: notes
         })
             .then((response) => {

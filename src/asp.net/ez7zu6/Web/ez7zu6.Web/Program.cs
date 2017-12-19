@@ -20,7 +20,7 @@ namespace ez7zu6.Web
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
-                .AddJsonFile($"appsettings.AppHarbor.json", isAppHarbor, true);
+                .AddJsonFile("appsettings.AppHarbor.json", isAppHarbor, true);
 
             var config = builder.Build();
 

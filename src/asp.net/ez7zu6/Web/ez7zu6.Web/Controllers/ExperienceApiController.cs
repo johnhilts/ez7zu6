@@ -47,6 +47,7 @@ namespace ez7zu6.Web.Controllers
             var userSession = PresentationService.GetOrCreateUserSession();
             model.InputDateTime = DateTime.Now;
             var experienceId = await (new MemberService(_appEnvironment).SaveExperience(model, userSession.UserId));
+            // TODO: is it possible to create multiple URLs with "labels" instead of one "Location"? - maybe it has to be part of the data ...?
             return Created(new Uri($"{_siteSettings.Value.Domain}/api/experience"), experienceId);
         }
 

@@ -1,14 +1,27 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import ExperienceEntry from '../components/ExperienceEntry';
 
 class ExperienceContainer extends Component {
   constructor(props) {
-    super(props);
+      super(props);
 
-		this.handleSaveInfo = this.handleSaveInfo.bind(this);
+      this.handleSaveInfo = this.handleSaveInfo.bind(this);
 
-		// this.state = { 'users': {}, }
+      const config = { apiDomain: 'http://localhost:17726' }
+      this.experienceUrl = `${config.apiDomain}/api/experience`
+
+      this.state = { 'experiences': [], }
     }
+
+
+	// NOTE: componentDidMount is used to initialize a component with server-side info
+	// fore more info, see react docs: https://facebook.github.io/react/docs/component-specs.html
+    componentDidMount() {
+        // TODO add some kind of helper class for the API calls ... maybe apiHelper with appropriate functions ... and we can pass in our then's, etc
+        axios.get(this.experienceUrl)
+            .then((response) => this.setState({ experiences: response.data }))
+	}
 
     handleSaveInfo(event) {
         event.preventDefault();
@@ -16,7 +29,15 @@ class ExperienceContainer extends Component {
         let notes = event.target[0].value
         let timestamp = (new Date()).getTime();
 
-        alert(`You entered: ${notes} - wow!`)
+        let config = {apiDomain: 'http://localhost:17726'};
+        axios.post(`${config.apiDomain}/api/experience`, {
+            Notes: notes
+        })
+            .then((response) => {
+                let listUrl = response.headers.location
+                axios.get(listUrl)
+                    .then((response) => this.setState({experiences : response.data}))
+            })
 
         // this.state.dates.push(date);
         // this.setState({ dates: this.state.dates });
@@ -26,7 +47,8 @@ class ExperienceContainer extends Component {
     }
 
     render() {
-        return <ExperienceEntry onSubmit={this.handleSaveInfo} />
+        // let experiences = [{Notes: 'one'}, {Notes: 'two'}, {Notes: 'three'}]
+        return <ExperienceEntry onSubmit={this.handleSaveInfo} experiences={this.state.experiences} />
     }
 }
 

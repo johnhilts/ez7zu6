@@ -44,7 +44,7 @@ namespace ez7zu6.Web.Controllers
             //    Created = DateTime.Now,
             //    IsActive = true,
             //};
-            LogSomeInfo();
+            //LogSomeInfo();
 
             var userSession = PresentationService.GetOrCreateUserSession();
             model.InputDateTime = DateTime.Now;

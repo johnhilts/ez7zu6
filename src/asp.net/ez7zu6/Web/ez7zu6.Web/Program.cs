@@ -24,11 +24,13 @@ namespace ez7zu6.Web
 
             var config = builder.Build();
 
-            BuildWebHost(args).Run();
+            var environmentName = isAppHarbor ? "AppHarbor" : "Development";
+            BuildWebHost(args, environmentName).Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args) // this line is using the {env.EnvironmentName}.json - need to break this apart
+        public static IWebHost BuildWebHost(string[] args, string environmentName) => 
+            WebHost.CreateDefaultBuilder(args) // TODO: this line is using the {env.EnvironmentName}.json - need to break this apart
+                .UseEnvironment(environmentName)
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();

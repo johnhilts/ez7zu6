@@ -44,11 +44,20 @@ namespace ez7zu6.Web.Controllers
             //    Created = DateTime.Now,
             //    IsActive = true,
             //};
+            LogSomeInfo();
+
             var userSession = PresentationService.GetOrCreateUserSession();
             model.InputDateTime = DateTime.Now;
             var experienceId = await (new MemberService(_appEnvironment).SaveExperience(model, userSession.UserId));
             // TODO: is it possible to create multiple URLs with "labels" instead of one "Location"? - maybe it has to be part of the data ...?
             return Created(new Uri($"{_siteSettings.Value.Domain}/api/experience"), experienceId);
+        }
+
+        private void LogSomeInfo()
+        {
+            bool.TryParse(System.Environment.GetEnvironmentVariable("IS_APPHARBOR"), out bool isAppHarbor);
+            var msg = $"IS_APPHARBOR = {isAppHarbor}, Domain = {_siteSettings.Value.Domain}";
+            throw new ApplicationException(msg);
         }
 
         // PUT api/values/5
@@ -62,5 +71,6 @@ namespace ez7zu6.Web.Controllers
         public void Delete(int id)
         {
         }
+
     }
 }

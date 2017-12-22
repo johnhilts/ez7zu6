@@ -13,17 +13,15 @@ namespace ez7zu6.Data.Repositories
     {
         public ExperienceRepository(IAppEnvironment appEnvironment) : base(appEnvironment) { }
 
-        public async Task<int> AddExperience(ExperienceUpdaeDataModel dataModel)
+        public async Task AddExperience(ExperienceUpdaeDataModel dataModel)
         {
             using (var db = GetConnection())
             {
                 string sql = @"
-                insert into dbo.Experiences(UserId, Notes, InputDateTime) 
-                values (@UserId, @Notes, @InputDateTime)
-                select cast(scope_identity() as int)";
+                insert into dbo.Experiences(ExperienceId, UserId, Notes, InputDateTime) 
+                values (@ExperienceId, @UserId, @Notes, @InputDateTime)";
 
-                var id = await db.QueryAsync<int>(sql, new { dataModel.UserId, dataModel.Notes, dataModel.InputDateTime, });
-                return id.Single();
+                await db.ExecuteAsync(sql, new { dataModel.ExperienceId, dataModel.UserId, dataModel.Notes, dataModel.InputDateTime, });
             }
         }
 

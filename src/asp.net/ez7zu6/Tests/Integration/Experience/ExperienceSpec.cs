@@ -48,7 +48,7 @@ namespace ez7zu6.Integration.Experience
             _client = new HttpClient(); // want to use a new client to force setting of cookies
             var response = await _client.PostAsync(url, new StringContent(json, Encoding.UTF8, "application/json"));
             var jsonResponse = await response.Content.ReadAsStringAsync();
-            var experienceId = JsonConvert.DeserializeObject<int>(jsonResponse);
+            var experienceId = JsonConvert.DeserializeObject<Guid>(jsonResponse);
             var cookies = response.Headers.GetValues("Set-Cookie");
             Guid.TryParse(cookies.Single(x => x.Contains("UserSession")).Split('=')[1].Split(';')[0], out Guid userSessionId);
             bool.TryParse(cookies.Single(x => x.Contains("IsAnonymous")).Split('=')[1].Split(';')[0], out bool isAnonymous);
@@ -81,7 +81,7 @@ namespace ez7zu6.Integration.Experience
     public class AddExperienceResponse
     {
         public HttpStatusCode StatusCode { get; set; }
-        public int ExperienceId { get; set; }
+        public Guid ExperienceId { get; set; }
         public bool IsAnonymous { get; set; }
         public string Location { get; set; }
         public Guid UserSessionId { get; set; }

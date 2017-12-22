@@ -11,7 +11,7 @@ go
 set quoted_identifier on
 go
 create table ez7zu6.dbo.Experiences (
-	ExperienceId int identity(1, 1) not null,
+	ExperienceId uniqueidentifier not null,
 	UserId uniqueidentifier not null,
 	Notes ntext not null,
 	/*

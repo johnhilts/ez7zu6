@@ -36,15 +36,18 @@ namespace ez7zu6.Member.Services
             return experiences.ToList();
         }
 
-        public async Task<int> SaveExperience(ExperienceSaveModel model, Guid userId)
+        public async Task<Guid> SaveExperience(ExperienceSaveModel model, Guid userId)
         {
+            var experienceId = Guid.NewGuid();
             var dataModel = new ExperienceUpdaeDataModel
             {
+                ExperienceId = experienceId,
                 UserId = userId,
                 Notes = model.Notes,
                 InputDateTime = model.InputDateTime,
             };
-            return await (new ExperienceRepository(_appEnvironment)).AddExperience(dataModel);
+            await (new ExperienceRepository(_appEnvironment)).AddExperience(dataModel);
+            return experienceId;
         }
     }
 }

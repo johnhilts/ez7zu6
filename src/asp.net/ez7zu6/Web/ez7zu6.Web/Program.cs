@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.IO;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+using ez7zu6.Web.Helper;
 
 namespace ez7zu6.Web
 {
@@ -14,14 +10,10 @@ namespace ez7zu6.Web
     {
         public static void Main(string[] args)
         {
-            // TODO: need to DRY
-            bool.TryParse(System.Environment.GetEnvironmentVariable("IS_APPHARBOR"), out bool isAppHarbor);
+            var isAppHarbor = (new EnvironmentHelper()).IsAppHarbor;
 
             var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                //.AddJsonFile("appsettings.json")
-                //.AddJsonFile("appsettings.AppHarbor.json", !isAppHarbor, true); // TODO: do we still need this? check https://docs.microsoft.com/en-us/aspnet/core/migration/1x-to-2x/
-                ;
+                .SetBasePath(Directory.GetCurrentDirectory());
 
             var config = builder.Build();
 

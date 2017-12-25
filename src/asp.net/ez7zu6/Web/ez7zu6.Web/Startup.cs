@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using ez7zu6.Core;
 using ez7zu6.Infrastructure.Environment;
+using ez7zu6.Web.Helper;
 
 namespace ez7zu6.Web
 {
@@ -45,7 +46,7 @@ namespace ez7zu6.Web
 
         private IAppEnvironment GetAppEnvironment()
         {
-            bool.TryParse(System.Environment.GetEnvironmentVariable("IS_APPHARBOR"), out bool isAppHarbor);
+            var isAppHarbor = (new EnvironmentHelper()).IsAppHarbor;
             if (isAppHarbor)
                 return new AppHarborAppEnvironment();
             else

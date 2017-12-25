@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Caching.Memory;
 using ez7zu6.Core;
+using ez7zu6.Core.Models.Web;
 using ez7zu6.Member.Models;
 using ez7zu6.Member.Services;
+using ez7zu6.Web.Models.Experience;
 
 namespace ez7zu6.Web.Controllers
 {
@@ -49,8 +52,16 @@ namespace ez7zu6.Web.Controllers
             var userSession = PresentationService.GetOrCreateUserSession();
             model.InputDateTime = DateTime.Now;
             var experienceId = await (new MemberService(_appEnvironment).SaveExperience(model, userSession.UserId));
-            // TODO: is it possible to create multiple URLs with "labels" instead of one "Location"? - maybe it has to be part of the data ...?
-            return Created(new Uri($"{_siteSettings.Value.Domain}/api/experience"), experienceId);
+            var createdModel = 
+                new ExperienceCreatedModel
+                {
+                    Value = experienceId,
+                    Links = new List<HateoasLinkModel>
+                    {
+                        new HateoasLinkModel { Label = "list", Link = new Uri($"{_siteSettings.Value.Domain}/api/experience") }
+                    },
+                };
+            return Created(new Uri($"{_siteSettings.Value.Domain}/api/experience"), createdModel);
         }
 
         private void LogSomeInfo()

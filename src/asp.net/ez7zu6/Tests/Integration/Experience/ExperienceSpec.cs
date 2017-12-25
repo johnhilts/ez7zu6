@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Net;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using NSpec;
 using FluentAssertions;
-using System.Collections.Generic;
+using ez7zu6.Core.Models.Web;
 using ez7zu6.Member.Models;
 
 namespace ez7zu6.Integration.Experience
@@ -24,11 +25,11 @@ namespace ez7zu6.Integration.Experience
             {
                 itAsync["can add an experience"] = async () =>
                   {
-                      var expected = new AddExperienceResponse { StatusCode = HttpStatusCode.Created, IsAnonymous = true, Location = $"{Domain}/api/experience", };
+                      var expected = new AddExperienceResponse { StatusCode = HttpStatusCode.Created, IsAnonymous = true, Location = $"{Domain}/api/experience",
+                          Links = new List<HateoasLinkModel> { new HateoasLinkModel { Label = "list", Link = new Uri($"{Domain}/api/experience") } },
+                      };
                       var actual = await AddExperience();
                       actual.ShouldBeEquivalentTo(expected, options => options.Excluding(o => o.ExperienceId).Excluding(o => o.UserSessionId));
-                      // should be able to go to the list and located experience ID at the top of new experiences
-                      // remember to re-use http client!! and I guess make it static?? (only if necessary)
                   };
 
                 itAsync["can see an experience in a list after adding it"] = async () =>
@@ -48,14 +49,15 @@ namespace ez7zu6.Integration.Experience
             _client = new HttpClient(); // want to use a new client to force setting of cookies
             var response = await _client.PostAsync(url, new StringContent(json, Encoding.UTF8, "application/json"));
             var jsonResponse = await response.Content.ReadAsStringAsync();
-            var experienceId = JsonConvert.DeserializeObject<Guid>(jsonResponse);
+            var createdResponse = JsonConvert.DeserializeObject<HateoasResponseModel<Guid>>(jsonResponse);
             var cookies = response.Headers.GetValues("Set-Cookie");
             Guid.TryParse(cookies.Single(x => x.Contains("UserSession")).Split('=')[1].Split(';')[0], out Guid userSessionId);
             bool.TryParse(cookies.Single(x => x.Contains("IsAnonymous")).Split('=')[1].Split(';')[0], out bool isAnonymous);
 
             return new AddExperienceResponse
             {
-                ExperienceId = experienceId,
+                ExperienceId = createdResponse.Value,
+                Links = createdResponse.Links,
                 StatusCode = response.StatusCode,
                 Location = response.Headers.GetValues("Location").FirstOrDefault(),
                 IsAnonymous = isAnonymous,
@@ -82,6 +84,7 @@ namespace ez7zu6.Integration.Experience
     {
         public HttpStatusCode StatusCode { get; set; }
         public Guid ExperienceId { get; set; }
+        public List<HateoasLinkModel> Links { get; set; }
         public bool IsAnonymous { get; set; }
         public string Location { get; set; }
         public Guid UserSessionId { get; set; }

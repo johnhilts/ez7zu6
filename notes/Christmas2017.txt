@@ -1,0 +1,12 @@
+main screen - only show top 4 experiences
+	but you can click a button to "see full list" and get that list that auto-refreshes on scroll
+	for the full list mode, dynamic generate sort order, and keep track of the previous index, and it's queryable
+
+UI Tests with cypress - next step
+- create a new login
+- add some items
+- log off / log on
+- verify access list of added items
+
+and now we're free and clear to finish implementing the rest of the features
+

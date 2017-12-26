@@ -42,6 +42,30 @@ namespace ez7zu6.Web.Controllers
         }
 
         [HttpGet]
+        public IActionResult Register(string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl ?? _defaultUrl;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (!ModelState.IsValid)
+                return View();
+
+            var userInfo = await PresentationService.RegisterUserAndCreateNewAuthenticatedSession(model);
+            if (!userInfo.CanRegister)
+            {
+                ModelState.AddModelError(string.Empty, $"Unable to Register User - {userInfo.Message}");
+                return View();
+            }
+
+            return Redirect(returnUrl);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Logout()
         {
             await PresentationService.RemoveSession();

@@ -49,5 +49,10 @@ namespace ez7zu6.Member.Services
             await (new ExperienceRepository(_appEnvironment)).AddExperience(dataModel);
             return experienceId;
         }
+
+        public async Task<UserCreatedModel> Register(RegisterModel model)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,12 +1,18 @@
-﻿<h2>This is the Login Page</h2>
+﻿<div style="margin-left: 10px;">
+<h2>Login</h2>
 
-<form action="/account/login" method="post">
-    <div>
-        <div><label for="txtUserName">User</label></div>
-        <div><input id="txtUserName" name="Username" placeholder="user" type="email" /></div>
-        <div><label for="txtPassword">Password</label></div>
-        <div><input id="txtPassword" name="Password" type="password" /></div>
-        <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
-        <div><button type="submit">Login</button></div>
-    </div>
-</form>
+    <form action="/account/login" method="post">
+        <div style="margin-bottom: 10px;">
+            <div><label for="txtUserName">User</label></div>
+            <div style="margin-bottom: 10px;"><input id="txtUserName" name="Username" placeholder="user" type="email" /></div>
+            <div><label for="txtPassword">Password</label></div>
+            <div style="margin-bottom: 10px;"><input id="txtPassword" name="Password" type="password" /></div>
+            <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+            <div><button class="btn btn-success" type="submit">Login</button></div>
+        </div>
+        <div>
+            <a href="register">Sign Up</a>
+        </div>
+    </form>
+
+</div>

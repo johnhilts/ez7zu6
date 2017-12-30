@@ -13,7 +13,7 @@ namespace ez7zu6.Data.Repositories
     {
         public ExperienceRepository(IAppEnvironment appEnvironment) : base(appEnvironment) { }
 
-        public async Task AddExperience(ExperienceUpdaeDataModel dataModel)
+        public async Task AddExperience(ExperienceUpdateDataModel dataModel)
         {
             using (var db = GetConnection())
             {

@@ -47,7 +47,7 @@ namespace ez7zu6.Member.Services
         public async Task<Guid> SaveExperience(ExperienceSaveModel model, Guid userId)
         {
             var experienceId = Guid.NewGuid();
-            var dataModel = new ExperienceUpdaeDataModel
+            var dataModel = new ExperienceUpdateDataModel
             {
                 ExperienceId = experienceId,
                 UserId = userId,

@@ -33,7 +33,7 @@ and IsActive = 1";
             {
                 string sql = @"
                 insert into dbo.Accounts(UserId, Username, UserPassword, IsAnonymous, OptedIn) 
-                values (@UserId, @Username, convert(binary, @UserPassword), @IsAnonymous, @OptedIn)";
+                values (@UserId, @Username, @UserPassword, @IsAnonymous, @OptedIn)";
 
                 await db.ExecuteAsync(sql, new { dataModel.UserId, dataModel.Username, dataModel.UserPassword, dataModel.IsAnonymous, dataModel.OptedIn, });
             }

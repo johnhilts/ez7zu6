@@ -15,7 +15,7 @@ go
 create table ez7zu6.dbo.Accounts (
 	UserId uniqueidentifier not null,
 	Username nvarchar(50) not null,
-	UserPassword binary(64) not null,
+	UserPassword varbinary(64) not null,
 	IsActive bit not null constraint DF_Accounts_IsActive default 1,
 	IsAnonymous bit not null constraint DF_Accounts_IsAnonymous default 1,
 	Created smalldatetime not null constraint DF_Accounts_Created default getdate(),

@@ -33,7 +33,7 @@ namespace ez7zu6.Member.Services
 
         private bool IsInvalidPassword(AccountQueryModel queryModel, string inputPassword)
         {
-            return queryModel.UserPassword.GetHexStringFromBytes().Equals(GetPasswordHash(queryModel.UserId, queryModel.Username, inputPassword));
+            return !queryModel.UserPassword.SequenceEqual(GetPasswordHash(queryModel.UserId, queryModel.Username, inputPassword));
         }
 
         public async Task<List<ExperienceQueryModel>> GetExperiences(Guid userId)
@@ -74,10 +74,10 @@ namespace ez7zu6.Member.Services
             return userId;
         }
 
-        private string GetPasswordHash(Guid userId, string username, string password)
+        private byte[] GetPasswordHash(Guid userId, string username, string password)
         {
             string salt = userId.ToString() + username;
-            return (new EncryptionHelper().GenerateHash(salt, password)).GetHexStringFromBytes();
+            return (new EncryptionHelper().GenerateHash(salt, password));
         }
     }
 }

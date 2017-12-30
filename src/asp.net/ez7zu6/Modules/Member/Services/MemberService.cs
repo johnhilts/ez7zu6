@@ -6,6 +6,9 @@ using ez7zu6.Core;
 using ez7zu6.Data.Models.Experience;
 using ez7zu6.Data.Repositories;
 using ez7zu6.Member.Models;
+using ez7zu6.Data.Models.Account;
+using ez7zu6.Core.Util;
+using ez7zu6.Core.Extensions;
 
 namespace ez7zu6.Member.Services
 {
@@ -50,9 +53,21 @@ namespace ez7zu6.Member.Services
             return experienceId;
         }
 
-        public async Task<UserCreatedModel> Register(RegisterModel model)
+        public async Task<Guid> Register(RegisterModel model)
         {
-            throw new NotImplementedException();
+            var userId = Guid.NewGuid();
+            string salt = userId.ToString() + model.Username;
+            var password = (new EncryptionHelper().GenerateHash(salt, model.Password)).GetHexStringFromBytes();
+            var dataModel = new AccountCreateModel
+            {
+                UserId = userId,
+                Username = model.Username,
+                UserPassword = password,
+                IsAnonymous = false,
+                OptedIn = DateTime.Today,
+            };
+            await (new AccountRepository(_appEnvironment)).AddUser(dataModel);
+            return userId;
         }
     }
 }

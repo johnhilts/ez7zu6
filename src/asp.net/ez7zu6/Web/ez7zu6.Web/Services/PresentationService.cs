@@ -44,8 +44,8 @@ namespace ez7zu6.Web.Services
                 return new UserInfoModel { CanRegister = false, Message = validationResult.Message };
 
             var registerModel = new RegisterModel { Name = model.Name, Username = model.Username, Password = model.Password, };
-            var createdModel = await (new MemberService(_appEnvironment)).Register(registerModel);
-            return await (new SessionService(_context, _memoryCache, _appEnvironment)).CreateNewAuthenticatedSession(model.Username, model.Password);
+            var userId = await (new MemberService(_appEnvironment)).Register(registerModel);
+            return await (new SessionService(_context, _memoryCache, _appEnvironment)).CreateNewAuthenticatedSession(userId, model.Username);
         }
 
         private (bool IsValid, string Message) ValidateRegistration(RegisterViewModel model)

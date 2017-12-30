@@ -4,6 +4,7 @@ using Dapper;
 using ez7zu6.Core;
 using ez7zu6.Infrastructure.Database;
 using ez7zu6.Data.Models.Account;
+using System;
 
 namespace ez7zu6.Data.Repositories
 {
@@ -28,5 +29,16 @@ and IsActive = 1";
             }
         }
 
+        public async Task AddUser(AccountCreateModel dataModel)
+        {
+            using (var db = GetConnection())
+            {
+                string sql = @"
+                insert into dbo.Accounts(UserId, Username, UserPassword, IsAnonymous, OptedIn) 
+                values (@UserId, @Username, convert(binary, @UserPassword), @IsAnonymous, @OptedIn)";
+
+                await db.ExecuteAsync(sql, new { dataModel.UserId, dataModel.Username, dataModel.UserPassword, dataModel.IsAnonymous, dataModel.OptedIn, });
+            }
+        }
     }
 }

@@ -25,26 +25,32 @@ namespace ez7zu6.Web.Services
             _appEnvironment = appEnvironment;
         }
 
+        public async Task<UserInfoModel> CreateNewAuthenticatedSession(Guid userId, string username)
+        {
+            var userInfo = new UserInfoModel { CanAuthenticate = true, UserId = userId, Username = username, };
+            await CreateNewAuthenticatedSession(userInfo);
+
+            return userInfo;
+        }
+
         public async Task<UserInfoModel> CreateNewAuthenticatedSession(string username, string password)
         {
             var userInfo = await (new MemberService(_appEnvironment)).GetUserInfoByUsernameAndPassword(username, password);
             if (!userInfo.CanAuthenticate) return userInfo;
 
-            var identity = new ClaimsIdentity(LoadClaims(userInfo), "login");
-            await _context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
-
-            CreateNewAuthenticatedSession(userInfo);
+            await CreateNewAuthenticatedSession(userInfo);
 
             return userInfo;
         }
 
-        private UserSession CreateNewAuthenticatedSession(UserInfoModel userInfo)
+        private async Task CreateNewAuthenticatedSession(UserInfoModel userInfo)
         {
+            var identity = new ClaimsIdentity(LoadClaims(userInfo), "login");
+            await _context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+
             var userSession = new UserSession { UserId = userInfo.UserId.Value, SessionId = Guid.NewGuid(), IsAnonymous = false, };
             CreateSessionCookie(userSession);
             AddSessionToCache(userSession);
-
-            return userSession;
         }
 
         private Claim[] LoadClaims(UserInfoModel model)

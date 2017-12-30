@@ -4,7 +4,6 @@ using Dapper;
 using ez7zu6.Core;
 using ez7zu6.Infrastructure.Database;
 using ez7zu6.Data.Models.Account;
-using System;
 
 namespace ez7zu6.Data.Repositories
 {
@@ -16,7 +15,6 @@ namespace ez7zu6.Data.Repositories
         {
             using (var db = GetConnection())
             {
-                // todo: add password check too!
                 const string query = @"
 select UserId, Username, UserPassword
 from dbo.Accounts (nolock) 

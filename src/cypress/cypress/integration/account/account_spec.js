@@ -23,7 +23,7 @@ describe('account', () => {
         it('cannot access profile after logout', () => {
             cy.visit(`${common.baseUrl}${helper.loginPath}`);
             helper.login();
-            cy.get('a.glyphicon-log-out').click()
+            helper.logout();
             let unaccessable = `${common.baseUrl}${helper.authenticationRequiredPath}`;
             cy.visit(unaccessable);
             cy.location().should((location) => {

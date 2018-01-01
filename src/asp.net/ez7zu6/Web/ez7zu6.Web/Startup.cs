@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using ez7zu6.Core;
 using ez7zu6.Infrastructure.Environment;
 using ez7zu6.Web.Helper;
+using ez7zu6.Web.Services;
 
 namespace ez7zu6.Web
 {
@@ -26,6 +27,8 @@ namespace ez7zu6.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IAppEnvironment>(s => GetAppEnvironment());
+
+            services.AddTransient<IApplicationService, ApplicationService>();
 
             services.AddOptions();
             services.Configure<AppSettings>(Configuration);

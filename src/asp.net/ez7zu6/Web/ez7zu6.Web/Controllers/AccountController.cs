@@ -1,10 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Caching.Memory;
-using ez7zu6.Core;
 using ez7zu6.Web.Models.Account;
 using ez7zu6.Web.Services;
 
@@ -14,8 +9,8 @@ namespace ez7zu6.Web.Controllers
     {
         private readonly string _defaultUrl = @"\profile";
 
-        public AccountController(IOptions<SiteSettings> siteSettings, IAppEnvironment appEnvironment, IMemoryCache memoryCache)
-            : base(siteSettings, appEnvironment, memoryCache) { }
+        public AccountController(IApplicationService applicationService)
+            : base(applicationService) { }
 
         [HttpGet]
         public IActionResult Login(string returnUrl = null)

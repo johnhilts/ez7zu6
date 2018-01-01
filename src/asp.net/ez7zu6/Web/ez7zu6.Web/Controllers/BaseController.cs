@@ -15,12 +15,14 @@ namespace ez7zu6.Web.Controllers
 
         protected readonly IOptions<SiteSettings> _siteSettings;
         protected readonly IAppEnvironment _appEnvironment;
+        private readonly IApplicationService _applicationService;
 
-        protected BaseController(IOptions<SiteSettings> siteSettings, IAppEnvironment appEnvironment, IMemoryCache memoryCache)
+        protected BaseController(IApplicationService applicationService)
         {
-            _siteSettings = siteSettings;
-            _appEnvironment = appEnvironment;
-            _memoryCache = memoryCache;
+            _applicationService = applicationService;
+            _siteSettings = _applicationService.SiteSettings;
+            _appEnvironment = _applicationService.AppEnvironment;
+            _memoryCache = _applicationService.MemoryCache;
         }
     }
 }

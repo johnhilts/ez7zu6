@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Caching.Memory;
-using ez7zu6.Core;
 using ez7zu6.Core.Models.Web;
 using ez7zu6.Member.Models;
 using ez7zu6.Member.Services;
 using ez7zu6.Web.Models.Experience;
+using ez7zu6.Web.Services;
 
 namespace ez7zu6.Web.Controllers
 {
@@ -16,9 +14,8 @@ namespace ez7zu6.Web.Controllers
     [Route("api/experience")]
     public class ExperienceApiController : BaseController
     {
-        public ExperienceApiController(IOptions<SiteSettings> siteSettings, IAppEnvironment appEnvironment, IMemoryCache memoryCache) : base(siteSettings, appEnvironment, memoryCache)
-        {
-        }
+        public ExperienceApiController(IApplicationService applicationService) 
+            : base(applicationService) { }
 
         [HttpGet]
         public async Task<IActionResult> Get()

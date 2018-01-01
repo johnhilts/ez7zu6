@@ -25,19 +25,26 @@ namespace ez7zu6.Data.Repositories
             }
         }
 
-        // TODO: add a sort order on the fly, then work off of that ... we will need to track the "previous" sort number, though, like in the weather app
-        public async Task<List<ExperienceQueryDataModel>> GetExperiencesByUserId(Guid userId)
+        public async Task<List<ExperienceQueryDataModel>> GetExperiencesByUserId(Guid userId, int numberOfExperiences, int? previousSortOrder)
         {
-            var take = 4; // TODO: get from configuration / settings
             using (var db = GetConnection())
             {
                 const string query = @"
-select top(@Take) ExperienceId, Notes, InputDateTime
-from dbo.Experiences (nolock) 
-where UserId = @UserId 
-order by InputDateTime desc";
+with UserExperiences as 
+(
+select ROW_NUMBER() over (order by e.InputDateTime desc, e.ExperienceId) as RowId, e.ExperienceId
+from dbo.Experiences e (nolock) 
+where e.UserId = @UserId
+)
+select e.ExperienceId, Notes, InputDateTime
+from dbo.Experiences e (nolock) 
+	inner join UserExperiences ue on e.ExperienceId = ue.ExperienceId
+where ue.RowId between @StartIndex and @EndIndex";
 
-                var experiences = await db.QueryAsync<ExperienceQueryDataModel>(query, new { UserId = userId, Take = take, });
+                var startIndex = previousSortOrder.GetValueOrDefault() + 1;
+                var endIndex = startIndex + numberOfExperiences - 1;
+
+                var experiences = await db.QueryAsync<ExperienceQueryDataModel>(query, new { UserId = userId, StartIndex = startIndex, EndIndex = endIndex, });
                 return experiences.ToList();
             }
         }

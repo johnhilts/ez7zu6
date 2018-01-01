@@ -36,9 +36,9 @@ namespace ez7zu6.Member.Services
             return !queryModel.UserPassword.SequenceEqual(GetPasswordHash(queryModel.UserId, queryModel.Username, inputPassword));
         }
 
-        public async Task<List<ExperienceQueryModel>> GetExperiences(Guid userId)
+        public async Task<List<ExperienceQueryModel>> GetExperiences(Guid userId, int numberOfExperiences)
         {
-            var experiencesData = await (new ExperienceRepository(_appEnvironment)).GetExperiencesByUserId(userId);
+            var experiencesData = await (new ExperienceRepository(_appEnvironment)).GetExperiencesByUserId(userId, numberOfExperiences, 0);
             var experiences = experiencesData
                 .Select(data => new ExperienceQueryModel { ExperienceId = data.ExperienceId, Notes = data.Notes, InputDateTime = data.InputDateTime });
             return experiences.ToList();

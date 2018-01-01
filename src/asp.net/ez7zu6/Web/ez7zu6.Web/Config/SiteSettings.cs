@@ -3,5 +3,6 @@
     public class SiteSettings
     {
         public string Domain { get; set; }
+        public int DefaultListLength { get; set; }
     }
 }

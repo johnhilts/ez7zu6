@@ -24,7 +24,8 @@ namespace ez7zu6.Web.Controllers
         public async Task<IActionResult> Get()
         {
             var userSession = PresentationService.GetOrCreateUserSession();
-            var experiences = await (new MemberService(_appEnvironment).GetExperiences(userSession.UserId));
+            var numberOfExperiences = _siteSettings.Value.DefaultListLength;
+            var experiences = await (new MemberService(_appEnvironment).GetExperiences(userSession.UserId, numberOfExperiences));
             return Ok(experiences);
         }
 

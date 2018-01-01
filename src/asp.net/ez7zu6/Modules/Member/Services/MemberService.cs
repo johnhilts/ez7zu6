@@ -9,18 +9,19 @@ using ez7zu6.Data.Models.Account;
 using ez7zu6.Data.Models.Experience;
 using ez7zu6.Data.Repositories;
 using ez7zu6.Member.Models;
+using ez7zu6.Infrastructure.Settings;
 
 namespace ez7zu6.Member.Services
 {
     public class MemberService
     {
-        private readonly IAppEnvironment _appEnvironment;
+        private readonly ApplicationSettings _applicationSettings;
 
-        public MemberService(IAppEnvironment appEnvironment) => _appEnvironment = appEnvironment;
+        public MemberService(ApplicationSettings applicationSettings) => _applicationSettings = applicationSettings;
 
         public async Task<UserInfoModel> GetUserInfoByUsernameAndPassword(string username, string password)
         {
-            var queryModel = await (new AccountRepository(_appEnvironment)).GetUserInfoByUsernameAndPassword(username, password);
+            var queryModel = await (new AccountRepository(_applicationSettings.AppEnvironment)).GetUserInfoByUsernameAndPassword(username, password);
             if (queryModel.NoMatch || IsInvalidPassword(queryModel, password))
             {
                 return new UserInfoModel { UserId = null, Username = null, CanAuthenticate = false, };
@@ -36,9 +37,14 @@ namespace ez7zu6.Member.Services
             return !queryModel.UserPassword.SequenceEqual(GetPasswordHash(queryModel.UserId, queryModel.Username, inputPassword));
         }
 
-        public async Task<List<ExperienceQueryModel>> GetExperiences(Guid userId, int numberOfExperiences)
+        // TODO: change ExperienceQueryModel to ExperienceQueryResultsModel and add a ExperienceQueryModel parameter
+        public async Task<List<ExperienceQueryModel>> GetExperiences(Guid userId, int? previousIndex)
         {
-            var experiencesData = await (new ExperienceRepository(_appEnvironment)).GetExperiencesByUserId(userId, numberOfExperiences, 0);
+            var numberOfExperiences = _applicationSettings.DatabaseSettings.DefaultListLength;
+            var startIndex = previousIndex.GetValueOrDefault() + 1;
+            var endIndex = startIndex + numberOfExperiences - 1;
+
+            var experiencesData = await (new ExperienceRepository(_applicationSettings.AppEnvironment)).GetExperiencesByUserId(userId, startIndex, endIndex);
             var experiences = experiencesData
                 .Select(data => new ExperienceQueryModel { ExperienceId = data.ExperienceId, Notes = data.Notes, InputDateTime = data.InputDateTime });
             return experiences.ToList();
@@ -54,7 +60,7 @@ namespace ez7zu6.Member.Services
                 Notes = model.Notes,
                 InputDateTime = model.InputDateTime,
             };
-            await (new ExperienceRepository(_appEnvironment)).AddExperience(dataModel);
+            await (new ExperienceRepository(_applicationSettings.AppEnvironment)).AddExperience(dataModel);
             return experienceId;
         }
 
@@ -70,7 +76,7 @@ namespace ez7zu6.Member.Services
                 IsAnonymous = false,
                 OptedIn = DateTime.Today,
             };
-            await (new AccountRepository(_appEnvironment)).AddUser(dataModel);
+            await (new AccountRepository(_applicationSettings.AppEnvironment)).AddUser(dataModel);
             return userId;
         }
 

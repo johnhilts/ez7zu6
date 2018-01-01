@@ -1,7 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Caching.Memory;
-using ez7zu6.Core;
 using ez7zu6.Infrastructure.Account;
 using ez7zu6.Member.Models;
 using ez7zu6.Member.Services;
@@ -12,29 +10,27 @@ namespace ez7zu6.Web.Services
     public class PresentationService
     {
         private readonly HttpContext _context;
-        private readonly IMemoryCache _memoryCache;
-        private readonly IAppEnvironment _appEnvironment;
+        private readonly IApplicationService _applicationService;
 
-        public PresentationService(HttpContext context, IMemoryCache memoryCache, IAppEnvironment appEnvironment)
+        public PresentationService(HttpContext context, IApplicationService applicationService)
         {
             _context = context;
-            _memoryCache = memoryCache;
-            _appEnvironment = appEnvironment;
+            _applicationService = applicationService;
         }
 
         public async Task<UserInfoModel> CreateNewAuthenticatedSession(LoginViewModel model)
         {
-            return await (new SessionService(_context, _memoryCache, _appEnvironment)).CreateNewAuthenticatedSession(model.Username, model.Password);
+            return await (new SessionService(_context, _applicationService)).CreateNewAuthenticatedSession(model.Username, model.Password);
         }
 
         public UserSession GetOrCreateUserSession()
         {
-            return new SessionService(_context, _memoryCache, _appEnvironment).GetOrCreateNewSession();
+            return new SessionService(_context, _applicationService).GetOrCreateNewSession();
         }
 
         public async Task RemoveSession()
         {
-            await new SessionService(_context, _memoryCache, _appEnvironment).RemoveSession();
+            await new SessionService(_context, _applicationService).RemoveSession();
         }
 
         public async Task<UserInfoModel> RegisterUserAndCreateNewAuthenticatedSession(RegisterViewModel model)
@@ -44,8 +40,8 @@ namespace ez7zu6.Web.Services
                 return new UserInfoModel { CanRegister = false, Message = validationResult.Message };
 
             var registerModel = new RegisterModel { Name = model.Name, Username = model.Username, Password = model.Password, };
-            var userId = await (new MemberService(_appEnvironment)).Register(registerModel);
-            return await (new SessionService(_context, _memoryCache, _appEnvironment)).CreateNewAuthenticatedSession(userId, model.Username);
+            var userId = await (new MemberService(_applicationService.ApplicationSettings)).Register(registerModel);
+            return await (new SessionService(_context, _applicationService)).CreateNewAuthenticatedSession(userId, model.Username);
         }
 
         private (bool IsValid, string Message) ValidateRegistration(RegisterViewModel model)

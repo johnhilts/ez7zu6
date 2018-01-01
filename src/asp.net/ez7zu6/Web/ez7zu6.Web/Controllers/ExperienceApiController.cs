@@ -18,11 +18,10 @@ namespace ez7zu6.Web.Controllers
             : base(applicationService) { }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(int? previousIndex)
         {
             var userSession = PresentationService.GetOrCreateUserSession();
-            var numberOfExperiences = _siteSettings.Value.DatabaseSettings.DefaultListLength;
-            var experiences = await (new MemberService(_appEnvironment).GetExperiences(userSession.UserId, numberOfExperiences));
+            var experiences = await (new MemberService(_applicationService.ApplicationSettings).GetExperiences(userSession.UserId, previousIndex));
             return Ok(experiences);
         }
 
@@ -49,7 +48,7 @@ namespace ez7zu6.Web.Controllers
 
             var userSession = PresentationService.GetOrCreateUserSession();
             model.InputDateTime = DateTime.Now;
-            var experienceId = await (new MemberService(_appEnvironment).SaveExperience(model, userSession.UserId));
+            var experienceId = await (new MemberService(_applicationService.ApplicationSettings).SaveExperience(model, userSession.UserId));
             var createdModel = 
                 new ExperienceCreatedModel
                 {

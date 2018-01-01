@@ -17,12 +17,14 @@ namespace ez7zu6.Web.Services
         private readonly HttpContext _context;
         private readonly IMemoryCache _memoryCache;
         private readonly IAppEnvironment _appEnvironment;
+        private readonly IApplicationService _applicationService;
 
-        public SessionService(HttpContext context, IMemoryCache memoryCache, IAppEnvironment appEnvironment)
+        public SessionService(HttpContext context, IApplicationService applicationService)
         {
             _context = context;
-            _memoryCache = memoryCache;
-            _appEnvironment = appEnvironment;
+            _applicationService = applicationService;
+            _memoryCache = _applicationService.MemoryCache;
+            _appEnvironment = _applicationService.AppEnvironment;
         }
 
         public async Task<UserInfoModel> CreateNewAuthenticatedSession(Guid userId, string username)
@@ -35,7 +37,7 @@ namespace ez7zu6.Web.Services
 
         public async Task<UserInfoModel> CreateNewAuthenticatedSession(string username, string password)
         {
-            var userInfo = await (new MemberService(_appEnvironment)).GetUserInfoByUsernameAndPassword(username, password);
+            var userInfo = await (new MemberService(_applicationService.ApplicationSettings)).GetUserInfoByUsernameAndPassword(username, password);
             if (!userInfo.CanAuthenticate) return userInfo;
 
             await CreateNewAuthenticatedSession(userInfo);

@@ -25,7 +25,7 @@ namespace ez7zu6.Data.Repositories
             }
         }
 
-        public async Task<List<ExperienceQueryDataModel>> GetExperiencesByUserId(Guid userId, int numberOfExperiences, int? previousSortOrder)
+        public async Task<List<ExperienceQueryDataModel>> GetExperiencesByUserId(Guid userId, int startIndex, int endIndex)
         {
             using (var db = GetConnection())
             {
@@ -40,9 +40,6 @@ select e.ExperienceId, Notes, InputDateTime
 from dbo.Experiences e (nolock) 
 	inner join UserExperiences ue on e.ExperienceId = ue.ExperienceId
 where ue.RowId between @StartIndex and @EndIndex";
-
-                var startIndex = previousSortOrder.GetValueOrDefault() + 1;
-                var endIndex = startIndex + numberOfExperiences - 1;
 
                 var experiences = await db.QueryAsync<ExperienceQueryDataModel>(query, new { UserId = userId, StartIndex = startIndex, EndIndex = endIndex, });
                 return experiences.ToList();

@@ -11,11 +11,11 @@ namespace ez7zu6.Web.Controllers
         private readonly IMemoryCache _memoryCache;
 
         private PresentationService _presentationService;
-        protected PresentationService PresentationService => _presentationService ?? (_presentationService = new PresentationService(HttpContext, _memoryCache, _appEnvironment));
+        protected PresentationService PresentationService => _presentationService ?? (_presentationService = new PresentationService(HttpContext, _applicationService));
 
         protected readonly IOptions<SiteSettings> _siteSettings;
         protected readonly IAppEnvironment _appEnvironment;
-        private readonly IApplicationService _applicationService;
+        protected readonly IApplicationService _applicationService;
 
         protected BaseController(IApplicationService applicationService)
         {

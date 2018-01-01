@@ -35,7 +35,7 @@ export default function ExperienceEntry(props) {
             </form>
             <div>
                 <ul>
-                    {props.experiences.map(experience => <li>{experience.notes}</li>)}
+                    {props.experiences.map((experience, index) => <li key={index}>{experience.notes}</li>)}
                 </ul>
             </div>
         </div>

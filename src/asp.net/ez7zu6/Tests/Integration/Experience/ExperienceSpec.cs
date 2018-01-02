@@ -35,8 +35,8 @@ namespace ez7zu6.Integration.Experience
                 itAsync["can see an experience in a list after adding it"] = async () =>
                 {
                     var experience = await AddExperience();
-                    var experienceList = await GetExperienceList();
-                    experienceList.Single(x => x.ExperienceId == experience.ExperienceId).Should().NotBeNull();
+                    var experiences = await GetExperienceList();
+                    experiences.Experiences.Single(x => x.ExperienceId == experience.ExperienceId).Should().NotBeNull();
                 };
             };
         }
@@ -65,12 +65,12 @@ namespace ez7zu6.Integration.Experience
             };
         }
 
-        private async Task<List<ExperienceQueryModel>> GetExperienceList()
+        private async Task<ExperienceQueryResultModel> GetExperienceList()
         {
             var url = new Uri($"{Domain}/api/experience");
             var response = await _client.GetAsync(url);
             var jsonResponse = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<List<ExperienceQueryModel>>(jsonResponse);
+            return JsonConvert.DeserializeObject<ExperienceQueryResultModel>(jsonResponse);
         }
 
     }

@@ -36,16 +36,16 @@ namespace ez7zu6.Member.Services
         }
 
         // TODO: change ExperienceQueryModel to ExperienceQueryResultsModel and add a ExperienceQueryModel parameter
-        public async Task<List<ExperienceQueryModel>> GetExperiences(Guid userId, int? previousIndex)
+        public async Task<ExperienceQueryResultModel> GetExperiences(Guid userId, int? previousIndex)
         {
             var numberOfExperiences = _applicationSettings.DatabaseSettings.DefaultListLength;
             var startIndex = previousIndex.GetValueOrDefault() + 1;
             var endIndex = startIndex + numberOfExperiences - 1;
 
             var experiencesData = await (new ExperienceRepository(_applicationSettings.AppEnvironment)).GetExperiencesByUserId(userId, startIndex, endIndex);
-            var experiences = experiencesData
+            var experiences = experiencesData.Experiences
                 .Select(data => new ExperienceQueryModel { ExperienceId = data.ExperienceId, Notes = data.Notes, InputDateTime = data.InputDateTime });
-            return experiences.ToList();
+            return new ExperienceQueryResultModel { Experiences = experiences.ToList(), TotalRowCount = experiencesData.TotalRowCount };
         }
 
         public async Task<Guid> SaveExperience(ExperienceSaveModel model, Guid userId)

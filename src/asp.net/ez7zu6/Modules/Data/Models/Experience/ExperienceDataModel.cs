@@ -2,7 +2,7 @@
 
 namespace ez7zu6.Data.Models.Experience
 {
-    public class ExperienceQueryDataModel
+    public class ExperienceDataModel
     {
         public Guid ExperienceId { get; set; }
         public string Notes { get; set; }

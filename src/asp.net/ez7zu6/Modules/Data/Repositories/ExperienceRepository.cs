@@ -25,24 +25,33 @@ namespace ez7zu6.Data.Repositories
             }
         }
 
-        public async Task<List<ExperienceQueryDataModel>> GetExperiencesByUserId(Guid userId, int startIndex, int endIndex)
+        public async Task<ExperienceQueryDataResultModel> GetExperiencesByUserId(Guid userId, int startIndex, int endIndex)
         {
             using (var db = GetConnection())
             {
                 const string query = @"
+declare @experiences table(RowId int, ExperienceId uniqueidentifier);
 with UserExperiences as 
 (
 select ROW_NUMBER() over (order by e.InputDateTime desc, e.ExperienceId) as RowId, e.ExperienceId
 from dbo.Experiences e (nolock) 
 where e.UserId = @UserId
 )
+insert into @experiences
+select * from UserExperiences
 select e.ExperienceId, Notes, InputDateTime
 from dbo.Experiences e (nolock) 
-	inner join UserExperiences ue on e.ExperienceId = ue.ExperienceId
-where ue.RowId between @StartIndex and @EndIndex";
+	inner join @experiences ue on e.ExperienceId = ue.ExperienceId
+where ue.RowId between @StartIndex and @EndIndex
 
-                var experiences = await db.QueryAsync<ExperienceQueryDataModel>(query, new { UserId = userId, StartIndex = startIndex, EndIndex = endIndex, });
-                return experiences.ToList();
+declare @totalRowLength int = (select count(*) from @experiences)
+select @totalRowLength TotalRowLength
+";
+
+                var experienceInfo = await db.QueryMultipleAsync(query, new { UserId = userId, StartIndex = startIndex, EndIndex = endIndex, });
+                var experiences = experienceInfo.Read<ExperienceDataModel>();
+                var totalRowCount = experienceInfo.Read<int>().Single();
+                return new ExperienceQueryDataResultModel { Experiences = experiences.ToList(), TotalRowCount = totalRowCount, };
             }
         }
     }

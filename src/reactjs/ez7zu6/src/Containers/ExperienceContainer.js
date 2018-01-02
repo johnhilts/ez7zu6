@@ -8,10 +8,11 @@ class ExperienceContainer extends Component {
 
       this.handleGetExperienceSuccess = this.handleGetExperienceSuccess.bind(this);
       this.handleSaveInfo = this.handleSaveInfo.bind(this);
+      this.handleFullListClick = this.handleFullListClick.bind(this);
 
       this.experienceUrl = '/api/experience'
 
-      this.state = { 'experiences': [], }
+      this.state = { 'experiences': [], showFullList: false, totalRowCount: 0, }
     }
 
     handleGetExperienceSuccess(response) {
@@ -45,9 +46,22 @@ class ExperienceContainer extends Component {
         // event.target.reset();
     }
 
+    handleFullListClick(event) {
+        event.preventDefault();
+
+        this.setState({ showFullList: true });
+    }
+
     render() {
         // let experiences = [{Notes: 'one'}, {Notes: 'two'}, {Notes: 'three'}]
-        return <ExperienceEntry onSubmit={this.handleSaveInfo} experiences={this.state.experiences} />
+        return (
+            <ExperienceEntry 
+                onSubmit={this.handleSaveInfo} 
+                onFullListClick={this.handleFullListClick} 
+                experiences={this.state.experiences} 
+                showFullList={this.state.showFullList}
+            />
+        )
     }
 }
 

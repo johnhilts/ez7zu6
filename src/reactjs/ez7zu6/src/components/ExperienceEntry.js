@@ -40,12 +40,15 @@ const RenderForm = (props) => {
 
 const RenderList = (props) => {
     let moreLabel = props.showFullList ? 'More' : 'Full List';
+    let moreButton = props.totalRowCount > props.experiences.length
+        ? <a role='button' onClick={props.onFullListClick}>{moreLabel}</a>
+        : <span>&nbsp;</span>
     return (
         <div>
             <ul>
                 {props.experiences.map((experience, index) => <li key={index}>{experience.notes}</li>)}
             </ul>
-            <a role='button' onClick={props.onFullListClick}>{moreLabel}</a>
+            {moreButton}
         </div>
     )
 }

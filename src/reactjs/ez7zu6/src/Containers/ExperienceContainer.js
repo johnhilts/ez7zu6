@@ -60,6 +60,7 @@ class ExperienceContainer extends Component {
                 onFullListClick={this.handleFullListClick} 
                 experiences={this.state.experiences} 
                 showFullList={this.state.showFullList}
+                totalRowCount={this.state.totalRowCount}
             />
         )
     }

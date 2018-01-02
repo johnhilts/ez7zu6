@@ -55,16 +55,16 @@ namespace ez7zu6.Web.Controllers
                     Value = experienceId,
                     Links = new List<HateoasLinkModel>
                     {
-                        new HateoasLinkModel { Label = "list", Link = new Uri($"{_siteSettings.Value.Domain}/api/experience") }
+                        new HateoasLinkModel { Label = "list", Link = new Uri($"{_applicationService.SiteSettings.Domain}/api/experience") }
                     },
                 };
-            return Created(new Uri($"{_siteSettings.Value.Domain}/api/experience"), createdModel);
+            return Created(new Uri($"{_applicationService.SiteSettings.Domain}/api/experience"), createdModel);
         }
 
         private void LogSomeInfo()
         {
             bool.TryParse(System.Environment.GetEnvironmentVariable("IS_APPHARBOR"), out bool isAppHarbor);
-            var msg = $"IS_APPHARBOR = {isAppHarbor}, Domain = {_siteSettings.Value.Domain}";
+            var msg = $"IS_APPHARBOR = {isAppHarbor}, Domain = {_applicationService.SiteSettings.Domain}";
             throw new ApplicationException(msg);
         }
 

@@ -2,9 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using ez7zu6.Core;
 using ez7zu6.Core.Util;
-using ez7zu6.Core.Extensions;
 using ez7zu6.Data.Models.Account;
 using ez7zu6.Data.Models.Experience;
 using ez7zu6.Data.Repositories;

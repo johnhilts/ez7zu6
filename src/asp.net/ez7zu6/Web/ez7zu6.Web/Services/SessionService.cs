@@ -15,16 +15,12 @@ namespace ez7zu6.Web.Services
     public class SessionService
     {
         private readonly HttpContext _context;
-        private readonly IMemoryCache _memoryCache;
-        private readonly IAppEnvironment _appEnvironment;
         private readonly IApplicationService _applicationService;
 
         public SessionService(HttpContext context, IApplicationService applicationService)
         {
             _context = context;
             _applicationService = applicationService;
-            _memoryCache = _applicationService.MemoryCache;
-            _appEnvironment = _applicationService.AppEnvironment;
         }
 
         public async Task<UserInfoModel> CreateNewAuthenticatedSession(Guid userId, string username)
@@ -99,7 +95,7 @@ namespace ez7zu6.Web.Services
 
         private UserSession GetExistingSession(Guid userSessionId, bool isAnonymous)
         {
-            if (_memoryCache.TryGetValue(userSessionId, out Guid userId))
+            if (_applicationService.MemoryCache.TryGetValue(userSessionId, out Guid userId))
                 return new UserSession { UserId = userId, SessionId = userSessionId, IsAnonymous = isAnonymous };
             else
                 return null; // get from database
@@ -161,7 +157,7 @@ namespace ez7zu6.Web.Services
             var cacheEntryOptions = new MemoryCacheEntryOptions()
                         // Keep in cache for this time, reset time if accessed.
                         .SetSlidingExpiration(expiration);
-            _memoryCache.Set(key, value, cacheEntryOptions);
+            _applicationService.MemoryCache.Set(key, value, cacheEntryOptions);
         }
 
     }

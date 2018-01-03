@@ -45,7 +45,7 @@ namespace ez7zu6.Member.Services
             var experiencesData = await (new ExperienceRepository(_applicationSettings.AppEnvironment)).GetExperiencesByUserId(userId, startIndex, endIndex);
             var experiences = experiencesData.Experiences
                 .Select(data => new ExperienceQueryModel { ExperienceId = data.ExperienceId, Notes = data.Notes, InputDateTime = data.InputDateTime });
-            return new ExperienceQueryResultModel { Experiences = experiences.ToList(), TotalRowCount = experiencesData.TotalRowCount };
+            return new ExperienceQueryResultModel { Experiences = experiences.ToList(), EndIndex = endIndex, TotalRowCount = experiencesData.TotalRowCount, };
         }
 
         public async Task<Guid> SaveExperience(ExperienceSaveModel model, Guid userId)

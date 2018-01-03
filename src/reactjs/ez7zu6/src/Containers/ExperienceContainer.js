@@ -6,24 +6,32 @@ class ExperienceContainer extends Component {
   constructor(props) {
       super(props);
 
+      this.buildGetExperienceUrl = this.buildGetExperienceUrl.bind(this);
       this.handleGetExperienceSuccess = this.handleGetExperienceSuccess.bind(this);
       this.handleSaveInfo = this.handleSaveInfo.bind(this);
       this.handleFullListClick = this.handleFullListClick.bind(this);
 
       this.experienceUrl = '/api/experience'
 
-      this.state = { 'experiences': [], showFullList: false, totalRowCount: 0, }
+      this.state = { 'experiences': [], showFullList: false, totalRowCount: 0, endIndex: 0, }
+    }
+
+    buildGetExperienceUrl(baseUrl, endIndex) {
+        return endIndex === 0
+        ? baseUrl
+        : `${baseUrl}/?previousIndex=${endIndex}`
     }
 
     handleGetExperienceSuccess(response) {
-        this.setState({ experiences: response.data.experiences, totalRowCount: response.data.totalRowCount, })
+        let experiences = [...this.state.experiences, ...response.data.experiences];
+        this.setState({ experiences: experiences, endIndex: response.data.endIndex, totalRowCount: response.data.totalRowCount, })
     }
 
 	// NOTE: componentDidMount is used to initialize a component with server-side info
 	// fore more info, see react docs: https://facebook.github.io/react/docs/component-specs.html
     componentDidMount() {
         // TODO add some kind of helper class for the API calls ... maybe apiHelper with appropriate functions ... and we can pass in our then's, etc
-        axios.get(this.experienceUrl).then(this.handleGetExperienceSuccess)
+        axios.get(this.buildGetExperienceUrl(this.experienceUrl, this.state.endIndex)).then(this.handleGetExperienceSuccess)
 	}
 
     handleSaveInfo(event) {
@@ -49,7 +57,11 @@ class ExperienceContainer extends Component {
     handleFullListClick(event) {
         event.preventDefault();
 
-        this.setState({ showFullList: true });
+        let showFullList = this.state.totalRowCount > this.state.endIndex;
+        this.setState({ showFullList: showFullList, });
+        if (showFullList){
+            axios.get(this.buildGetExperienceUrl(this.experienceUrl, this.state.endIndex)).then(this.handleGetExperienceSuccess)
+        }
     }
 
     render() {

@@ -44,7 +44,9 @@ class ExperienceContainer extends Component {
         })
             .then((response) => {
                 let listUrl = response.headers.location
-                axios.get(listUrl).then(this.handleGetExperienceSuccess)
+                this.setState({endIndex: 0, experiences: [], }, () => { // start at the top to get our newest addition(s)
+                    axios.get(this.buildGetExperienceUrl(listUrl, this.state.endIndex)).then(this.handleGetExperienceSuccess)
+                }) 
             })
 
         // this.state.dates.push(date);
